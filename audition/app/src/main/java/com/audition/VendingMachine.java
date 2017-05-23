@@ -23,4 +23,6 @@ public class VendingMachine extends AppCompatActivity {
         databaseHandler = new DatabaseHandler(this);
     }
 
+
+
 }
