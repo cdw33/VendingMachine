@@ -64,7 +64,7 @@ public class VendingMachine extends AppCompatActivity {
                 displayHandler.updateDisplay();
                 break;
             case R.id.buttonAddCoin:
-                changeHandler.showCoinSelectDialog(this);
+                changeHandler.showCoinSelectDialog(this, displayHandler);
                 break;
             case R.id.buttonProductBay:
                 productHandler.showDispensedProductsDialog(this);

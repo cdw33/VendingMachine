@@ -122,7 +122,7 @@ public class ChangeHandler extends VendingMachine {
         listInsertedCoins.clear();
     }
 
-    public void showCoinSelectDialog(final Activity activity){
+    public void showCoinSelectDialog(final Activity activity, final DisplayHandler displayHandler){
         LayoutInflater li = LayoutInflater.from(activity);
         final View coinView = li.inflate(R.layout.coin_select, null);
 
@@ -191,6 +191,7 @@ public class ChangeHandler extends VendingMachine {
 
             public void onCoinSelect(Coin coin){
                 onCoinInserted(coin);
+                displayHandler.updateDisplay(getSumOfInsertedCoins());
                 coinSelectDialog.dismiss();
             }
         });
