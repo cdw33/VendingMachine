@@ -65,6 +65,7 @@ public class DatabaseHandler extends VendingMachine {
         addProductsToDB(1, "Cola", 1.00f, 15);
         addProductsToDB(2, "Chips", 0.50f, 12);
         addProductsToDB(3, "Candy", 0.65f, 8);
+        addProductsToDB(4, "Gum", 0.35f, 0);
 
         addCoinsToDB(1, 0.05f, 15);
         addCoinsToDB(2, 0.10f, 12);

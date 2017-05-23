@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Map;
 
 public class VendingMachine extends AppCompatActivity {
 
@@ -36,10 +35,7 @@ public class VendingMachine extends AppCompatActivity {
         productHandler    = new ProductHandler(this, databaseHandler);
     }
 
-
-
     public void onProductButtonClicked(int productID){
-        String productName = databaseHandler.getNameOfProduct(productID);
         float productPrice = databaseHandler.getPriceOfProduct(productID);
         float currentTotal = changeHandler.getSumOfInsertedCoins();
 
