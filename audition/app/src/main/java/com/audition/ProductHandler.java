@@ -31,8 +31,10 @@ public class ProductHandler extends VendingMachine {
         listDispensedProducts = new ArrayList<Product>();
     }
 
-    public void onProductButtonClicked(int productID){
+    public boolean isProductAvailable(int productID, DatabaseHandler db){
+        int qty = db.getQuantityOfProduct(productID);
 
+        return (qty > 0);
     }
 
     private int getNumberOfProductsInBay(){

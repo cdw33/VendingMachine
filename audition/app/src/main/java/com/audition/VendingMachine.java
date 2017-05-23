@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,26 @@ public class VendingMachine extends AppCompatActivity {
         productHandler    = new ProductHandler(this);
     }
 
+
+
+    public void onProductButtonClicked(int productID){
+        String productName = databaseHandler.getNameOfProduct(productID);
+        float productPrice = databaseHandler.getPriceOfProduct(productID);
+        float currentTotal = changeHandler.getSumOfInsertedCoins();
+
+        //Check Product Availability
+        if (!productHandler.isProductAvailable(productID, databaseHandler)) { //If sold out
+            //Flash SOLD OUT
+            return;
+        }
+
+        //Check if enough money inserted
+//        if(!isProductPaidFor(productID)){ //If not enough
+//            lcdController.flashMessage(productPrice, currentTotal);
+//            return;
+//        }
+    }
+
     public void onButtonClicked(View v){
         switch (v.getId()){
             case R.id.buttonReturnCoins:
@@ -51,31 +72,31 @@ public class VendingMachine extends AppCompatActivity {
                 changeHandler.showReturnedCoinsDialog(this);
                 break;
             case R.id.buttonProduct1:
-                productHandler.onProductButtonClicked(1);
+                onProductButtonClicked(1);
                 break;
             case R.id.buttonProduct2:
-                productHandler.onProductButtonClicked(2);
+                onProductButtonClicked(2);
                 break;
             case R.id.buttonProduct3:
-                productHandler.onProductButtonClicked(3);
+                onProductButtonClicked(3);
                 break;
             case R.id.buttonProduct4:
-                productHandler.onProductButtonClicked(4);
+                onProductButtonClicked(4);
                 break;
             case R.id.buttonProduct5:
-                productHandler.onProductButtonClicked(5);
+                onProductButtonClicked(5);
                 break;
             case R.id.buttonProduct6:
-                productHandler.onProductButtonClicked(6);
+                onProductButtonClicked(6);
                 break;
             case R.id.buttonProduct7:
-                productHandler.onProductButtonClicked(7);
+                onProductButtonClicked(7);
                 break;
             case R.id.buttonProduct8:
-                productHandler.onProductButtonClicked(8);
+                onProductButtonClicked(8);
                 break;
             case R.id.buttonProduct9:
-                productHandler.onProductButtonClicked(9);
+                onProductButtonClicked(9);
                 break;
             default:
                 return;
