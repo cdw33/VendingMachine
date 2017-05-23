@@ -30,10 +30,10 @@ public class VendingMachine extends AppCompatActivity {
 
     private void initialize(){
 //        buttonHandler     = new ButtonHandler(this);
-        displayHandler    = new DisplayHandler(this);
         databaseHandler   = new DatabaseHandler(this);
+        displayHandler    = new DisplayHandler(this);
         changeHandler     = new ChangeHandler(this);
-        productHandler    = new ProductHandler(this);
+        productHandler    = new ProductHandler(this, databaseHandler);
     }
 
 
@@ -44,13 +44,13 @@ public class VendingMachine extends AppCompatActivity {
         float currentTotal = changeHandler.getSumOfInsertedCoins();
 
         //Check Product Availability
-        if (!productHandler.isProductAvailable(productID, databaseHandler)) { //If sold out
-            //Flash SOLD OUT
+        if (productHandler.isProductAvailable(productID)) { //If sold out
+            displayHandler.flashMessage(displayHandler.SOLD_OUT);
             return;
         }
 
         //Check if enough money inserted
-//        if(!isProductPaidFor(productID)){ //If not enough
+//        if(!productHandler.getProductCost(productID)){ //If not enough
 //            lcdController.flashMessage(productPrice, currentTotal);
 //            return;
 //        }

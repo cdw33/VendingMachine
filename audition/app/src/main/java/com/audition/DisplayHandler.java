@@ -3,6 +3,9 @@ package com.audition;
 import android.app.Activity;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class DisplayHandler extends VendingMachine {
 
     Activity activity;
@@ -51,12 +54,30 @@ public class DisplayHandler extends VendingMachine {
         //is money in machine?
 
         if (currentTotal > 0.0f) { //If no coins inserted
-            setDisplayText(String.valueOf(currentTotal));
+            setDisplayText("$" + String.format("%.2f", currentTotal));
             return;
         }
 
         setDisplayText(INSERT_COIN);
+    }
 
+    // TODO - Make Generic Method to handle multiple input cases
+    public void flashMessage(String flashMsg){
+        final String resetMsg = getDisplayText(); //Get current display contents
 
+        setDisplayText(flashMsg); //Write temporary message to display
+
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setDisplayText(resetMsg); //Restore original display contents
+                    }
+                });
+            }
+        }, 1000);
     }
 }

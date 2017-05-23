@@ -3,6 +3,7 @@ package com.audition;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +19,13 @@ import java.util.ArrayList;
 public class ProductHandler extends VendingMachine {
 
     Activity activity;
+    DatabaseHandler db;
 
     ArrayList<Product> listDispensedProducts;
 
-    ProductHandler(Activity activity){
+    ProductHandler(Activity activity, DatabaseHandler db){
         this.activity = activity;
+        this.db = db;
 
         initialize();
     }
@@ -31,7 +34,7 @@ public class ProductHandler extends VendingMachine {
         listDispensedProducts = new ArrayList<Product>();
     }
 
-    public boolean isProductAvailable(int productID, DatabaseHandler db){
+    public boolean isProductAvailable(int productID){
         int qty = db.getQuantityOfProduct(productID);
 
         return (qty > 0);
