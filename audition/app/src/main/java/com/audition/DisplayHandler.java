@@ -3,10 +3,6 @@ package com.audition;
 import android.app.Activity;
 import android.widget.TextView;
 
-/**
- * Created by Chris on 5/23/2017.
- */
-
 public class DisplayHandler extends VendingMachine {
 
     Activity activity;

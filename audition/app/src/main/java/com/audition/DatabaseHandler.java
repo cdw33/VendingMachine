@@ -5,10 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-/**
- * Created by Chris on 5/23/2017.
- */
-
 public class DatabaseHandler extends VendingMachine {
 
     Activity activity;

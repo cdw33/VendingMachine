@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 
-/**
- * Created by Chris on 5/23/2017.
- */
-
 public class ButtonHandler extends VendingMachine {
 
     Activity activity;
