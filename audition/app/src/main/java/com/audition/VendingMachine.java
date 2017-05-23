@@ -91,54 +91,54 @@ public class VendingMachine extends AppCompatActivity {
                 buttonPenny.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(2.5f, 19.05f, 1.52f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(2.5f, 19.05f, 1.52f));
                     }
                 });
                 buttonNickle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(5.0f, 21.21f, 1.95f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(5.0f, 21.21f, 1.95f));
                     }
                 });
                 buttonDime.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(2.268f, 17.91f, 1.35f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(2.268f, 17.91f, 1.35f));
                     }
                 });
                 buttonQuarter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(5.67f, 24.26f, 1.75f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(5.67f, 24.26f, 1.75f));
                     }
                 });
                 buttonHalfDollar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(11.034f, 30.61f, 2.15f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(11.034f, 30.61f, 2.15f));
                     }
                 });
                 buttonDollar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin(8.1f, 26.49f, 2.0f));
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin(8.1f, 26.49f, 2.0f));
                     }
                 });
                 buttonRandom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        coinSlotHandler.onCoinInserted(new Coin());
-                        coinSelectDialog.dismiss();
+                        onCoinSelect(new Coin());
                     }
                 });
             }
+
+            public void onCoinSelect(Coin coin){
+                coinSlotHandler.onCoinInserted(coin);
+                displayHandler.updateDisplay(coinSlotHandler.getSumOfInsertedCoins());
+                coinSelectDialog.dismiss();
+            }
         });
+
 
         coinSelectDialog.show();
     }

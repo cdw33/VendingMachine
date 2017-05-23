@@ -43,14 +43,17 @@ public class DisplayHandler extends VendingMachine {
         setDisplayText(String.valueOf(coinSlotHandler.getSumOfInsertedCoins()));
     }
 
-    public void updateDisplay(CoinSlotHandler coinSlot){
+    public void updateDisplay(float currentTotal){
         //Determine state
         //is money in machine?
 
-        if (coinSlot.isCoinSlotEmpty()) { //If no coins inserted
-            setDisplayText(INSERT_COIN);
+        if (currentTotal > 0.0f) { //If no coins inserted
+            setDisplayText(String.valueOf(currentTotal));
+            return;
         }
 
-        setDisplayText(String.valueOf(coinSlot.getSumOfInsertedCoins()));
+        setDisplayText(INSERT_COIN);
+
+
     }
 }
