@@ -9,6 +9,11 @@ public class DisplayHandler extends VendingMachine {
 
     TextView tvDisplay;
 
+    final String INSERT_COIN  = "INSERT COIN";
+    final String SOLD_OUT     = "SOLD OUT";
+    final String THANK_YOU    = "THANK YOU";
+    final String EXACT_CHANGE = "EXACT CHANGE ONLY";
+
     DisplayHandler(Activity activity){
         this.activity = activity;
 
@@ -25,5 +30,27 @@ public class DisplayHandler extends VendingMachine {
 
     public String getDisplayText(){
         return tvDisplay.getText().toString();
+    }
+
+    public void updateDisplay(){
+        //Determine state
+        //is money in machine?
+
+        if (coinSlotHandler.isCoinSlotEmpty()) { //If no coins inserted
+            setDisplayText(INSERT_COIN);
+        }
+
+        setDisplayText(String.valueOf(coinSlotHandler.getSumOfInsertedCoins()));
+    }
+
+    public void updateDisplay(CoinSlotHandler coinSlot){
+        //Determine state
+        //is money in machine?
+
+        if (coinSlot.isCoinSlotEmpty()) { //If no coins inserted
+            setDisplayText(INSERT_COIN);
+        }
+
+        setDisplayText(String.valueOf(coinSlot.getSumOfInsertedCoins()));
     }
 }

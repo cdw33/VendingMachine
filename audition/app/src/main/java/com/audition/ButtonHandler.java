@@ -1,6 +1,9 @@
 package com.audition;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -63,7 +66,7 @@ public class ButtonHandler extends VendingMachine {
         */
         buttonAddCoin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                //showCoinSelectDialog(activity);
             }
         });
 
@@ -141,6 +144,84 @@ public class ButtonHandler extends VendingMachine {
 
             }
         });
+    }
+
+    public void showCoinSelectDialog(final Activity activity){
+        LayoutInflater li = LayoutInflater.from(activity);
+        final View coinView = li.inflate(R.layout.coin_select, null);
+
+        final AlertDialog coinSelectDialog = new AlertDialog.Builder(activity)
+                .setView(coinView)
+                .setTitle("Coin Select")
+                .setNegativeButton(android.R.string.cancel, null)
+                .setCancelable(true)
+                .create();
+
+        coinSelectDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                final Button buttonPenny       = (Button) coinView.findViewById(R.id.buttonPenny);
+                final Button buttonNickle      = (Button) coinView.findViewById(R.id.buttonNickle);
+                final Button buttonDime        = (Button) coinView.findViewById(R.id.buttonDime);
+                final Button buttonQuarter     = (Button) coinView.findViewById(R.id.buttonQuarter);
+                final Button buttonRandom      = (Button) coinView.findViewById(R.id.buttonRandom);
+                final Button buttonHalfDollar  = (Button) coinView.findViewById(R.id.buttonHalfDollar);
+                final Button buttonDollar      = (Button) coinView.findViewById(R.id.buttonDollar);
+
+                //Coin Button onClickListeners
+                buttonPenny.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(2.5f, 19.05f, 1.52f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonNickle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(5.0f, 21.21f, 1.95f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonDime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(2.268f, 17.91f, 1.35f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonQuarter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(5.67f, 24.26f, 1.75f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonHalfDollar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(11.034f, 30.61f, 2.15f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonDollar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin(8.1f, 26.49f, 2.0f));
+                        coinSelectDialog.dismiss();
+                    }
+                });
+                buttonRandom.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        coinSlotHandler.onCoinInserted(new Coin());
+                        coinSelectDialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        coinSelectDialog.show();
     }
 
 }
