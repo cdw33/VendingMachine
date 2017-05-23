@@ -6,6 +6,8 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+// This class contains functions pertaining to the LCD Display.
+
 public class DisplayHandler extends VendingMachine {
 
     Activity activity;

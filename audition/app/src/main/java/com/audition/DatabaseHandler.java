@@ -7,6 +7,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+// This class manages a database containing information about the inventory of products and coins
+// stored within the vending machine. The manipulation of data with the DB is controlled solely
+// by this class.
+
 public class DatabaseHandler extends VendingMachine {
 
     Activity activity;

@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+// This is the main class for the Vending Machine. This class contains objects which perform
+// specific jobs within the machine. The UI Button handling is implemented here, as well as the
+// topmost logic of the vending process.
+
 public class VendingMachine extends AppCompatActivity implements CallbackInterface {
 
     DisplayHandler    displayHandler;
@@ -28,7 +32,7 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
     }
 
     @Override
-    public void onCoinVerificationComplete(){
+    public void updateDisplay(){
         displayHandler.updateDisplay(changeHandler.getSumOfInsertedCoins());
     }
 
@@ -59,10 +63,11 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
         //TODO - Make change for customer
 
         //Update Display
-        displayHandler.updateDisplay();
         displayHandler.flashMessage(displayHandler.THANK_YOU);
     }
 
+    //Each button in its respective layout has its onClick value set to this function.
+    //The button is identified by its given ID and it is handled accordingly
     public void onButtonClicked(View v){
         switch (v.getId()){
             case R.id.buttonReturnCoins:

@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+// This class manages products in the Vending Machine, because the Database manages the inventory,
+// this is partly a helper class to retrieve required/requested product information, but also
+// maintains the Product Retrieval bay.
+
 public class ProductHandler extends VendingMachine {
 
     Activity activity;

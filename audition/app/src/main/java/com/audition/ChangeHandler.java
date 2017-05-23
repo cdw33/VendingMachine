@@ -11,6 +11,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+// This class contains many Coin and change related functionality. Most of the logic for the Coin
+// insert slot and the Coin return button & bay can be found in here. The methods are split between
+// Coin insertion and Coin return functions. There are comments which distinguish their respective
+// parts.
+
 public class ChangeHandler extends VendingMachine {
 
     Activity activity;
@@ -39,13 +44,13 @@ public class ChangeHandler extends VendingMachine {
     }
 
     private void initialize(){
-        listInsertedCoins = new ArrayList<Coin>();
-        listReturnedCoins = new ArrayList<Coin>();
+        listInsertedCoins = new ArrayList<>();
+        listReturnedCoins = new ArrayList<>();
     }
 
-    /*
-        Coin Insert Slot
-    */
+    /************************
+     *   Coin Insert Slot   *
+     ************************/
 
     public void onCoinInserted(Coin coin){
         determineCoinValue(coin);
@@ -57,7 +62,7 @@ public class ChangeHandler extends VendingMachine {
 
         listInsertedCoins.add(coin);
 
-        ic.onCoinVerificationComplete();
+        ic.updateDisplay();
     }
 
     public ArrayList<Coin> getListInsertedCoins(){
@@ -123,6 +128,8 @@ public class ChangeHandler extends VendingMachine {
         }
 
         listInsertedCoins.clear();
+
+        ic.updateDisplay();
     }
 
     public void showCoinSelectDialog(final Activity activity, final DisplayHandler displayHandler){
@@ -202,15 +209,17 @@ public class ChangeHandler extends VendingMachine {
         coinSelectDialog.show();
     }
 
-    /*
-        Coin Return Bay
-    */
+    /***********************
+     *   Coin Return Bay   *
+     ***********************/
 
     public void onCoinReturnClicked(){
         for(Coin coin : listInsertedCoins){
             listReturnedCoins.add(coin);
         }
         listInsertedCoins.clear();
+
+        ic.updateDisplay();
     }
 
     private void emptyReturnBay(){

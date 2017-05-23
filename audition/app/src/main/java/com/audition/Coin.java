@@ -2,7 +2,11 @@ package com.audition;
 
 import java.util.Random;
 
-public class Coin extends VendingMachine{
+// This class outlines a Coin object. When a coin is inserted into the machine, its specifications are
+// measures and stored in this object. Then the new coin can be checked against known coin specs
+// to determine its value and/or validity
+
+public class Coin {
 
     private float diameter; //mm
     private float width; //mm
@@ -96,9 +100,9 @@ public class Coin extends VendingMachine{
     private boolean isWithinTolerance(float spec1, float spec2){
         //Measurement tolerance percentage, coin can be +/- %tolerance of exact coin specs
         //Currently %5, may be lowered after testing
-        final float tolerance = 0.05f;
+        final float TOLERANCE = 0.05f;
 
-        float allowableError = spec1 * tolerance;
+        float allowableError = spec1 * TOLERANCE;
         float actualError = Math.abs(spec1 - spec2);
 
         return (actualError < allowableError);
