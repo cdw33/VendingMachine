@@ -7,6 +7,7 @@ public class VendingMachine extends AppCompatActivity {
 
     ButtonHandler buttonHandler;
     DisplayHandler displayHandler;
+    DatabaseHandler databaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class VendingMachine extends AppCompatActivity {
     private void initialize(){
         buttonHandler = new ButtonHandler(this);
         displayHandler = new DisplayHandler(this);
+        databaseHandler = new DatabaseHandler(this);
     }
 
 }
