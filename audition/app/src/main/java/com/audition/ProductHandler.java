@@ -12,10 +12,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by Chris on 5/23/2017.
- */
-
 public class ProductHandler extends VendingMachine {
 
     Activity activity;
@@ -31,16 +27,14 @@ public class ProductHandler extends VendingMachine {
     }
 
     private void initialize(){
-        listDispensedProducts = new ArrayList<Product>();
+        listDispensedProducts = new ArrayList<>();
     }
 
     public boolean isProductAvailable(int productID){
-        int qty = db.getQuantityOfProduct(productID);
-
-        return (qty > 0);
+        return (db.getQuantityOfProduct(productID) > 0);
     }
 
-    public float getProductCost(int productID){
+    public float getProductPrice(int productID){
         return db.getPriceOfProduct(productID);
     }
 

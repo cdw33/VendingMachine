@@ -11,10 +11,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by Chris on 5/23/2017.
- */
-
 public class ChangeHandler extends VendingMachine {
 
     Activity activity;
@@ -23,6 +19,16 @@ public class ChangeHandler extends VendingMachine {
 
     ArrayList<Coin> listInsertedCoins; //Holds coins currently inserted
     ArrayList<Coin> listReturnedCoins; //Holds coins in return bay
+
+    // Coin specification - source U.S. Mint
+    // https://www.usmint.gov/learn/coin-and-medal-programs/coin-specifications
+    // Coin(float diameter (millimeters), float width (mm), float weight (grams), float value ($))
+    Coin penny      = new Coin(2.5f, 19.05f, 1.52f, 0.01f);
+    Coin nickle     = new Coin(5.0f, 21.21f, 1.95f, 0.05f);
+    Coin dime       = new Coin(2.268f, 17.91f, 1.35f, 0.1f);
+    Coin quarter    = new Coin(5.67f, 24.26f, 1.75f, 0.25f);
+    Coin halfDollar = new Coin(11.034f, 30.61f, 2.15f, 0.5f);
+    Coin dollar     = new Coin(8.1f, 26.49f, 2.0f, 1.0f);
 
     ChangeHandler(Activity activity, DatabaseHandler db){
         this.activity = activity;
@@ -71,20 +77,6 @@ public class ChangeHandler extends VendingMachine {
     }
 
     private void determineCoinValue(Coin coin){
-        // nickle  5.000g 21.21mm 1.95mm
-        // dime    2.268g 17.91mm 1.35mm
-        // quarter 5.670g 24.26mm 1.75mm
-        // Coin specification - source U.S. Mint
-        // https://www.usmint.gov/learn/coin-and-medal-programs/coin-specifications
-
-        //Coin(float diameter (millimeters), float width (mm), float weight (grams), float value ($))
-        Coin penny = new Coin(2.5f, 19.05f, 1.52f, 0.01f);
-        Coin nickle = new Coin(5.0f, 21.21f, 1.95f, 0.05f);
-        Coin dime = new Coin(2.268f, 17.91f, 1.35f, 0.1f);
-        Coin quarter = new Coin(5.67f, 24.26f, 1.75f, 0.25f);
-        Coin halfDollar = new Coin(11.034f, 30.61f, 2.15f, 0.5f);
-        Coin dollar = new Coin(8.1f, 26.49f, 2.0f, 1.0f);
-
         //If coin is valid US currency, update value
         if(coin.isSame(penny)){
             coin.setValue(penny.getValue());
@@ -112,10 +104,6 @@ public class ChangeHandler extends VendingMachine {
     //Valid means coin can be accepted. A US Penny is authentic but not valid since
     //we only accept nickle, dime, quarter
     private boolean isCoinValid(Coin coin){
-        Coin nickle  = new Coin(5.0f, 21.21f, 1.95f, 0.05f);
-        Coin dime    = new Coin(2.268f, 17.91f, 1.35f, 0.1f);
-        Coin quarter = new Coin(5.67f, 24.26f, 1.75f, 0.25f);
-
         if(coin.getValue() == nickle.getValue() ||
                 coin.getValue() == dime.getValue() ||
                 coin.getValue() ==quarter.getValue()){
@@ -132,6 +120,82 @@ public class ChangeHandler extends VendingMachine {
         }
 
         listInsertedCoins.clear();
+    }
+
+    public void showCoinSelectDialog(final Activity activity){
+        LayoutInflater li = LayoutInflater.from(activity);
+        final View coinView = li.inflate(R.layout.coin_select, null);
+
+        final AlertDialog coinSelectDialog = new AlertDialog.Builder(activity)
+                .setView(coinView)
+                .setTitle("Coin Select")
+                .setNegativeButton(android.R.string.cancel, null)
+                .setCancelable(true)
+                .create();
+
+        coinSelectDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                final Button buttonPenny       = (Button) coinView.findViewById(R.id.buttonPenny);
+                final Button buttonNickle      = (Button) coinView.findViewById(R.id.buttonNickle);
+                final Button buttonDime        = (Button) coinView.findViewById(R.id.buttonDime);
+                final Button buttonQuarter     = (Button) coinView.findViewById(R.id.buttonQuarter);
+                final Button buttonRandom      = (Button) coinView.findViewById(R.id.buttonRandom);
+                final Button buttonHalfDollar  = (Button) coinView.findViewById(R.id.buttonHalfDollar);
+                final Button buttonDollar      = (Button) coinView.findViewById(R.id.buttonDollar);
+
+                //Coin Button onClickListeners
+                buttonPenny.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(penny));
+                    }
+                });
+                buttonNickle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(nickle));
+                    }
+                });
+                buttonDime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(dime));
+                    }
+                });
+                buttonQuarter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(quarter));
+                    }
+                });
+                buttonHalfDollar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(halfDollar));
+                    }
+                });
+                buttonDollar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin(dollar));
+                    }
+                });
+                buttonRandom.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onCoinSelect(new Coin());
+                    }
+                });
+            }
+
+            public void onCoinSelect(Coin coin){
+                onCoinInserted(coin);
+                coinSelectDialog.dismiss();
+            }
+        });
+
+        coinSelectDialog.show();
     }
 
     /*

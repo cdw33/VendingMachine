@@ -43,6 +43,14 @@ public class Coin extends VendingMachine{
         key = 0;
     }
 
+    Coin(Coin copyCoin){
+        this.diameter = copyCoin.getDiameter();
+        this.width    = copyCoin.getWidth();
+        this.weight   = copyCoin.getWeight();
+        this.value    = copyCoin.getValue();
+        this.key      = copyCoin.getKey();
+    }
+
     public float getDiameter() {
         return diameter;
     }
