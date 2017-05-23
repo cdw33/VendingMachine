@@ -40,6 +40,10 @@ public class ProductHandler extends VendingMachine {
         return (qty > 0);
     }
 
+    public float getProductCost(int productID){
+        return db.getPriceOfProduct(productID);
+    }
+
     private int getNumberOfProductsInBay(){
         return listDispensedProducts.size();
     }

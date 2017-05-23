@@ -44,16 +44,16 @@ public class VendingMachine extends AppCompatActivity {
         float currentTotal = changeHandler.getSumOfInsertedCoins();
 
         //Check Product Availability
-        if (productHandler.isProductAvailable(productID)) { //If sold out
+        if (!productHandler.isProductAvailable(productID)) { //If sold out
             displayHandler.flashMessage(displayHandler.SOLD_OUT);
             return;
         }
 
         //Check if enough money inserted
-//        if(!productHandler.getProductCost(productID)){ //If not enough
-//            lcdController.flashMessage(productPrice, currentTotal);
-//            return;
-//        }
+        if(currentTotal < productPrice){ //If not enough money inserted
+            displayHandler.flashPrice(productPrice);
+            return;
+        }
     }
 
     public void onButtonClicked(View v){

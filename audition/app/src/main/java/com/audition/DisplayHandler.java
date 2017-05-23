@@ -80,4 +80,8 @@ public class DisplayHandler extends VendingMachine {
             }
         }, 1000);
     }
+
+    public void flashPrice(float price){
+        flashMessage("$" + String.format("%.2f", price));
+    }
 }
