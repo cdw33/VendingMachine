@@ -2,9 +2,10 @@ package com.audition;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-public class VendingMachine extends AppCompatActivity {
+public class VendingMachine extends AppCompatActivity implements CallbackInterface {
 
     DisplayHandler    displayHandler;
     DatabaseHandler   databaseHandler;
@@ -24,6 +25,11 @@ public class VendingMachine extends AppCompatActivity {
         displayHandler    = new DisplayHandler(this);
         changeHandler     = new ChangeHandler(this, databaseHandler);
         productHandler    = new ProductHandler(this, databaseHandler);
+    }
+
+    @Override
+    public void onCoinVerificationComplete(){
+        displayHandler.updateDisplay(changeHandler.getSumOfInsertedCoins());
     }
 
     public void onProductButtonClicked(int productID){

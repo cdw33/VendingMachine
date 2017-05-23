@@ -37,28 +37,16 @@ public class DisplayHandler extends VendingMachine {
     }
 
     public void updateDisplay(){
-        //Determine state
-        //is money in machine?
-//
-//        if (coinSlotHandler.isCoinSlotEmpty()) { //If no coins inserted
-//            setDisplayText(INSERT_COIN);
-//        }
-//
-//        setDisplayText(String.valueOf(coinSlotHandler.getSumOfInsertedCoins()));
-
         setDisplayText(INSERT_COIN);
     }
 
     public void updateDisplay(float currentTotal){
-        //Determine state
-        //is money in machine?
-
         if (currentTotal > 0.0f) { //If no coins inserted
             setDisplayText("$" + String.format("%.2f", currentTotal));
             return;
         }
 
-        setDisplayText(INSERT_COIN);
+        updateDisplay();
     }
 
     // TODO - Make Generic Method to handle multiple input cases

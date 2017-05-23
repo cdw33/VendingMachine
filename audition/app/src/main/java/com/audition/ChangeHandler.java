@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class ChangeHandler extends VendingMachine {
 
     Activity activity;
-
     DatabaseHandler db;
+    CallbackInterface ic;
 
     ArrayList<Coin> listInsertedCoins; //Holds coins currently inserted
     ArrayList<Coin> listReturnedCoins; //Holds coins in return bay
@@ -32,6 +32,7 @@ public class ChangeHandler extends VendingMachine {
 
     ChangeHandler(Activity activity, DatabaseHandler db){
         this.activity = activity;
+        this.ic = (CallbackInterface) activity;
         this.db = db;
 
         initialize();
@@ -55,6 +56,8 @@ public class ChangeHandler extends VendingMachine {
         }
 
         listInsertedCoins.add(coin);
+
+        ic.onCoinVerificationComplete();
     }
 
     public ArrayList<Coin> getListInsertedCoins(){
