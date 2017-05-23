@@ -161,7 +161,7 @@
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/buttonCoinReturn"
+                            android:id="@+id/buttonReturnCoins"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -195,7 +195,7 @@
                 android:text="Product Bay" />
 
             <Button
-                android:id="@+id/buttonReturnSlot"
+                android:id="@+id/buttonCoinReturnBay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
