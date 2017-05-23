@@ -14,7 +14,8 @@ public class VendingMachine extends AppCompatActivity {
 //    ButtonHandler buttonHandler;
     DisplayHandler    displayHandler;
     DatabaseHandler   databaseHandler;
-    ChangeHandler changeHandler;
+    ChangeHandler     changeHandler;
+    ProductHandler    productHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,8 @@ public class VendingMachine extends AppCompatActivity {
 //        buttonHandler     = new ButtonHandler(this);
         displayHandler    = new DisplayHandler(this);
         databaseHandler   = new DatabaseHandler(this);
-        changeHandler = new ChangeHandler(this);
+        changeHandler     = new ChangeHandler(this);
+        productHandler    = new ProductHandler(this);
 
     }
 
@@ -42,6 +44,7 @@ public class VendingMachine extends AppCompatActivity {
                 showCoinSelectDialog(this);
                 break;
             case R.id.buttonProductBay:
+                productHandler.showDispensedProductsDialog(this);
                 break;
             case R.id.buttonCoinReturnBay:
                 changeHandler.showReturnedCoinsDialog(this);
