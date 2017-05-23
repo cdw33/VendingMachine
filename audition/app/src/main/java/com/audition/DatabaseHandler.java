@@ -3,6 +3,7 @@ package com.audition;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseHandler extends VendingMachine {
@@ -90,6 +91,47 @@ public class DatabaseHandler extends VendingMachine {
         insertValues.put("price", price);
         insertValues.put("quantity", quantity);
         db.insert("inventory", null, insertValues);
+    }
+
+    public int getQuantityOfProduct(int productID){
+        Cursor cursor = queryBuilder("quantity", "inventory", "key", String.valueOf(productID));
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex("quantity"));
+    }
+
+    public float getPriceOfProduct(int productID){
+        Cursor cursor = queryBuilder("price", "inventory", "key", String.valueOf(productID));
+        cursor.moveToFirst();
+        return cursor.getFloat(cursor.getColumnIndex("price"));
+    }
+
+    public String getNameOfProduct(int productID){
+        Cursor cursor = queryBuilder("name", "inventory", "key", String.valueOf(productID));
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("name"));
+    }
+
+    private Cursor queryBuilder(String columnName, String tableName, String keyName, String keyValue){
+//        Cursor cursor = db.rawQuery("SELECT quantity FROM inventory WHERE key = ?", new String[] { String.valueOf(productID) });
+        return db.rawQuery("SELECT " + columnName + " FROM " + tableName + " WHERE " + keyName + " = ?", new String[] { keyValue });
+    }
+
+    public boolean decrementQuantityOfProduct(int productID){
+        int prevQuantity = getQuantityOfProduct(productID);
+
+        if(prevQuantity == 0){
+            return false;
+        }
+
+        int currQuantity = prevQuantity-1;
+
+        ContentValues args = new ContentValues();
+        args.put("quantity", currQuantity);
+
+        db.update("inventory", args, String.format("%s = ?", "key"),
+                new String[]{String.valueOf(productID)});
+
+        return true;
     }
 
     // COIN INVENTORY DATABASE

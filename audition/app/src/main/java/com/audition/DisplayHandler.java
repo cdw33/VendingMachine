@@ -22,6 +22,7 @@ public class DisplayHandler extends VendingMachine {
 
     private void initializeDisplay(){
         tvDisplay = (TextView) activity.findViewById(R.id.tvLCD);
+        tvDisplay.setText(INSERT_COIN);
     }
 
     public void setDisplayText(String msg){

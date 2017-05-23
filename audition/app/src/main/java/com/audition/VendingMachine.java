@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Map;
+
 public class VendingMachine extends AppCompatActivity {
 
 //    ButtonHandler buttonHandler;
@@ -31,7 +33,6 @@ public class VendingMachine extends AppCompatActivity {
         databaseHandler   = new DatabaseHandler(this);
         changeHandler     = new ChangeHandler(this);
         productHandler    = new ProductHandler(this);
-
     }
 
     public void onButtonClicked(View v){
@@ -50,22 +51,31 @@ public class VendingMachine extends AppCompatActivity {
                 changeHandler.showReturnedCoinsDialog(this);
                 break;
             case R.id.buttonProduct1:
+                productHandler.onProductButtonClicked(1);
                 break;
             case R.id.buttonProduct2:
+                productHandler.onProductButtonClicked(2);
                 break;
             case R.id.buttonProduct3:
+                productHandler.onProductButtonClicked(3);
                 break;
             case R.id.buttonProduct4:
+                productHandler.onProductButtonClicked(4);
                 break;
             case R.id.buttonProduct5:
+                productHandler.onProductButtonClicked(5);
                 break;
             case R.id.buttonProduct6:
+                productHandler.onProductButtonClicked(6);
                 break;
             case R.id.buttonProduct7:
+                productHandler.onProductButtonClicked(7);
                 break;
             case R.id.buttonProduct8:
+                productHandler.onProductButtonClicked(8);
                 break;
             case R.id.buttonProduct9:
+                productHandler.onProductButtonClicked(9);
                 break;
             default:
                 return;
@@ -149,7 +159,4 @@ public class VendingMachine extends AppCompatActivity {
 
         coinSelectDialog.show();
     }
-
-
-
 }

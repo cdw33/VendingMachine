@@ -31,6 +31,10 @@ public class ProductHandler extends VendingMachine {
         listDispensedProducts = new ArrayList<Product>();
     }
 
+    public void onProductButtonClicked(int productID){
+
+    }
+
     private int getNumberOfProductsInBay(){
         return listDispensedProducts.size();
     }
