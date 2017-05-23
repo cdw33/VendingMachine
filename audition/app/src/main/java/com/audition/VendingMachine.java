@@ -14,8 +14,7 @@ public class VendingMachine extends AppCompatActivity {
 //    ButtonHandler buttonHandler;
     DisplayHandler    displayHandler;
     DatabaseHandler   databaseHandler;
-    CoinSlotHandler   coinSlotHandler;
-    CoinReturnHandler coinReturnHandler;
+    ChangeHandler changeHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +28,14 @@ public class VendingMachine extends AppCompatActivity {
 //        buttonHandler     = new ButtonHandler(this);
         displayHandler    = new DisplayHandler(this);
         databaseHandler   = new DatabaseHandler(this);
-        coinSlotHandler   = new CoinSlotHandler(this);
-        coinReturnHandler = new CoinReturnHandler(this);
+        changeHandler = new ChangeHandler(this);
+
     }
 
     public void onButtonClicked(View v){
         switch (v.getId()){
             case R.id.buttonReturnCoins:
-                coinReturnHandler.onCoinReturnClicked(coinSlotHandler.getListInsertedCoins());
-                coinSlotHandler.coinReturnClicked();
+                changeHandler.onCoinReturnClicked();
                 displayHandler.updateDisplay();
                 break;
             case R.id.buttonAddCoin:
@@ -46,7 +44,7 @@ public class VendingMachine extends AppCompatActivity {
             case R.id.buttonProductBay:
                 break;
             case R.id.buttonCoinReturnBay:
-                coinReturnHandler.showReturnedCoinsDialog(this);
+                changeHandler.showReturnedCoinsDialog(this);
                 break;
             case R.id.buttonProduct1:
                 break;
@@ -139,8 +137,8 @@ public class VendingMachine extends AppCompatActivity {
             }
 
             public void onCoinSelect(Coin coin){
-                coinSlotHandler.onCoinInserted(coin);
-                displayHandler.updateDisplay(coinSlotHandler.getSumOfInsertedCoins());
+                changeHandler.onCoinInserted(coin);
+                displayHandler.updateDisplay(changeHandler.getSumOfInsertedCoins());
                 coinSelectDialog.dismiss();
             }
         });
