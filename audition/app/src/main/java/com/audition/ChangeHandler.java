@@ -19,11 +19,14 @@ public class ChangeHandler extends VendingMachine {
 
     Activity activity;
 
+    DatabaseHandler db;
+
     ArrayList<Coin> listInsertedCoins; //Holds coins currently inserted
     ArrayList<Coin> listReturnedCoins; //Holds coins in return bay
 
-    ChangeHandler(Activity activity){
+    ChangeHandler(Activity activity, DatabaseHandler db){
         this.activity = activity;
+        this.db = db;
 
         initialize();
     }
@@ -88,12 +91,15 @@ public class ChangeHandler extends VendingMachine {
         }
         else if(coin.isSame(nickle)){
             coin.setValue(nickle.getValue());
+            coin.setKey(db.NICKLE_KEY);
         }
         else if (coin.isSame(dime)) {
             coin.setValue(dime.getValue());
+            coin.setKey(db.DIME_KEY);
         }
         else if (coin.isSame(quarter)) {
             coin.setValue(quarter.getValue());
+            coin.setKey(db.QUARTER_KEY);
         }
         else if (coin.isSame(halfDollar)) {
             coin.setValue(halfDollar.getValue());
@@ -117,6 +123,15 @@ public class ChangeHandler extends VendingMachine {
         }
 
         return false;
+    }
+
+    public void moveCoinsToStorage(){
+        //Add each coin in coin slot to DB
+        for(Coin coin : listInsertedCoins){ //For each inserted coin
+            db.incrementQuantityOfCoin(coin.getKey()); //Add to change DB
+        }
+
+        listInsertedCoins.clear();
     }
 
     /*

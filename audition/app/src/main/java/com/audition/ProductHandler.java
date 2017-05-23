@@ -44,6 +44,12 @@ public class ProductHandler extends VendingMachine {
         return db.getPriceOfProduct(productID);
     }
 
+    public void dispenseProduct(int productID){
+        String productName = db.getNameOfProduct(productID);
+        listDispensedProducts.add(new Product(productName));
+        db.decrementQuantityOfProduct(productID);
+    }
+
     private int getNumberOfProductsInBay(){
         return listDispensedProducts.size();
     }

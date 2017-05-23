@@ -10,6 +10,8 @@ public class Coin extends VendingMachine{
 
     private float value; //$USD
 
+    private int key; //DB Key
+
     public final float UNKNOWN_VALUE = -1.0f;
 
     Coin(){ //Generate random coin
@@ -20,6 +22,7 @@ public class Coin extends VendingMachine{
         weight = rand.nextFloat();
 
         value = UNKNOWN_VALUE; //unknown value
+        key = 0;
     }
 
     Coin(float d, float wi, float we){ //Create coin of unknown value
@@ -28,6 +31,7 @@ public class Coin extends VendingMachine{
         weight = we;
 
         value = UNKNOWN_VALUE; //unknown value
+        key = 0;
     }
 
     //Create coin with known value
@@ -36,6 +40,7 @@ public class Coin extends VendingMachine{
         width = wi;
         weight = we;
         value = v;
+        key = 0;
     }
 
     public float getDiameter() {
@@ -56,6 +61,14 @@ public class Coin extends VendingMachine{
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getKey() {
+        return key;
     }
 
     //Compare 2 coins for equivalent diameter, weight, and width

@@ -32,7 +32,7 @@ public class VendingMachine extends AppCompatActivity {
 //        buttonHandler     = new ButtonHandler(this);
         databaseHandler   = new DatabaseHandler(this);
         displayHandler    = new DisplayHandler(this);
-        changeHandler     = new ChangeHandler(this);
+        changeHandler     = new ChangeHandler(this, databaseHandler);
         productHandler    = new ProductHandler(this, databaseHandler);
     }
 
@@ -54,6 +54,20 @@ public class VendingMachine extends AppCompatActivity {
             displayHandler.flashPrice(productPrice);
             return;
         }
+
+        //Check if exact change is required
+
+        //Move inserted coins into coin storage
+        changeHandler.moveCoinsToStorage();
+
+        //Dispense product
+        productHandler.dispenseProduct(productID);
+
+        //Make change for customer
+
+        //Update Display
+        displayHandler.updateDisplay();
+        displayHandler.flashMessage(displayHandler.THANK_YOU);
     }
 
     public void onButtonClicked(View v){

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DatabaseHandler extends VendingMachine {
 
@@ -22,6 +23,11 @@ public class DatabaseHandler extends VendingMachine {
     final String PRICE    = "price";
     final String QUANTITY = "quantity";
     final String VALUE    = "value";
+
+    final int NICKLE_KEY  = 1;
+    final int DIME_KEY    = 2;
+    final int QUARTER_KEY = 3;
+
 
 //    enum QueryTypes{
 //        CREATE_TABLE,
@@ -42,7 +48,7 @@ public class DatabaseHandler extends VendingMachine {
         db = activity.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + INVENTORY_TABLE_NAME + "(" + KEY + " INT, " + NAME + " VARCHAR," + PRICE + " FLOAT," + QUANTITY + " INT);");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + COINS_TABLE_NAME + "(" + VALUE + " FLOAT," + QUANTITY + " INT);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + COINS_TABLE_NAME + "(" + KEY + " INT, " + VALUE + " FLOAT," + QUANTITY + " INT);");
 
         addDefaultDataToDatabase();
     }
@@ -51,10 +57,6 @@ public class DatabaseHandler extends VendingMachine {
     private void resetDatabase(){
         db.execSQL("DROP TABLE IF EXISTS " + INVENTORY_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + COINS_TABLE_NAME);
-
-        activity.deleteDatabase(DB_NAME);
-
-        initializeDatabase();
     }
 
     //Add default data to DB
@@ -64,9 +66,9 @@ public class DatabaseHandler extends VendingMachine {
         addProductsToDB(2, "Chips", 0.50f, 12);
         addProductsToDB(3, "Candy", 0.65f, 8);
 
-        addCoinsToDB(0.05f, 15);
-        addCoinsToDB(0.10f, 12);
-        addCoinsToDB(0.25f, 8);
+        addCoinsToDB(1, 0.05f, 15);
+        addCoinsToDB(2, 0.10f, 12);
+        addCoinsToDB(3, 0.25f, 8);
     }
 
 //    private String createQuery(QueryTypes qt){
@@ -86,29 +88,29 @@ public class DatabaseHandler extends VendingMachine {
 
     public void addProductsToDB(int key, String name, float price, int quantity){
         ContentValues insertValues = new ContentValues();
-        insertValues.put("key", key);
-        insertValues.put("name", name);
-        insertValues.put("price", price);
-        insertValues.put("quantity", quantity);
-        db.insert("inventory", null, insertValues);
+        insertValues.put(KEY, key);
+        insertValues.put(NAME, name);
+        insertValues.put(PRICE, price);
+        insertValues.put(QUANTITY, quantity);
+        db.insert(INVENTORY_TABLE_NAME, null, insertValues);
     }
 
     public int getQuantityOfProduct(int productID){
-        Cursor cursor = queryBuilder("quantity", "inventory", "key", String.valueOf(productID));
+        Cursor cursor = queryBuilder(QUANTITY, INVENTORY_TABLE_NAME, KEY, String.valueOf(productID));
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndex("quantity"));
+        return cursor.getInt(cursor.getColumnIndex(QUANTITY));
     }
 
     public float getPriceOfProduct(int productID){
-        Cursor cursor = queryBuilder("price", "inventory", "key", String.valueOf(productID));
+        Cursor cursor = queryBuilder(PRICE, INVENTORY_TABLE_NAME, KEY, String.valueOf(productID));
         cursor.moveToFirst();
-        return cursor.getFloat(cursor.getColumnIndex("price"));
+        return cursor.getFloat(cursor.getColumnIndex(PRICE));
     }
 
     public String getNameOfProduct(int productID){
-        Cursor cursor = queryBuilder("name", "inventory", "key", String.valueOf(productID));
+        Cursor cursor = queryBuilder(NAME, INVENTORY_TABLE_NAME, KEY, String.valueOf(productID));
         cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex("name"));
+        return cursor.getString(cursor.getColumnIndex(NAME));
     }
 
     private Cursor queryBuilder(String columnName, String tableName, String keyName, String keyValue){
@@ -126,9 +128,9 @@ public class DatabaseHandler extends VendingMachine {
         int currQuantity = prevQuantity-1;
 
         ContentValues args = new ContentValues();
-        args.put("quantity", currQuantity);
+        args.put(QUANTITY, currQuantity);
 
-        db.update("inventory", args, String.format("%s = ?", "key"),
+        db.update(INVENTORY_TABLE_NAME, args, String.format("%s = ?", KEY),
                 new String[]{String.valueOf(productID)});
 
         return true;
@@ -136,10 +138,35 @@ public class DatabaseHandler extends VendingMachine {
 
     // COIN INVENTORY DATABASE
 
-    public void addCoinsToDB(float value, int quantity){
+    public void addCoinsToDB(int key, float value, int quantity){
         ContentValues insertValues = new ContentValues();
-        insertValues.put("value", value);
-        insertValues.put("quantity", quantity);
-        db.insert("coins", null, insertValues);
+        insertValues.put(KEY, key);
+        insertValues.put(VALUE, value);
+        insertValues.put(QUANTITY, quantity);
+        db.insert(COINS_TABLE_NAME, null, insertValues);
+    }
+
+    public void incrementQuantityOfCoin(int coinKey){
+        int newCoinQty = getQuantityOfCoin(coinKey) + 1;
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(QUANTITY, newCoinQty);
+
+        db.update(COINS_TABLE_NAME, newValues, KEY + "=" + String.valueOf(coinKey), null);
+    }
+
+    public void decrementQuantityOfCoin(int coinKey){
+        int newCoinQty = getQuantityOfCoin(coinKey) - 1;
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(QUANTITY, newCoinQty);
+
+        db.update(COINS_TABLE_NAME, newValues, KEY + "=" + String.valueOf(coinKey), null);
+    }
+
+    public int getQuantityOfCoin(int coinKey){
+        Cursor cursor = db.rawQuery("SELECT " + QUANTITY + " FROM " + COINS_TABLE_NAME + " WHERE " + KEY + " = ?", new String[] { String.valueOf(coinKey) });
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndex(QUANTITY));
     }
 }
