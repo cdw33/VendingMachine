@@ -6,6 +6,7 @@ import android.os.Bundle;
 public class VendingMachine extends AppCompatActivity {
 
     ButtonHandler buttonHandler;
+    DisplayHandler displayHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,7 @@ public class VendingMachine extends AppCompatActivity {
 
     private void initialize(){
         buttonHandler = new ButtonHandler(this);
+        displayHandler = new DisplayHandler(this);
     }
 
 }
