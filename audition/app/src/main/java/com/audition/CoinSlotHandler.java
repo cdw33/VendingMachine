@@ -35,6 +35,14 @@ public class CoinSlotHandler extends VendingMachine {
         listInsertedCoins.add(coin);
     }
 
+    public ArrayList<Coin> getListInsertedCoins(){
+        return listInsertedCoins;
+    }
+
+    public void coinReturnClicked(){
+        listInsertedCoins.clear();
+    }
+
     public boolean isCoinSlotEmpty(){
         return listInsertedCoins.isEmpty();
     }

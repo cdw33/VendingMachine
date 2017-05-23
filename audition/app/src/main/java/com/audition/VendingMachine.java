@@ -12,9 +12,10 @@ import android.widget.Button;
 public class VendingMachine extends AppCompatActivity {
 
 //    ButtonHandler buttonHandler;
-    DisplayHandler displayHandler;
-    DatabaseHandler databaseHandler;
-    CoinSlotHandler coinSlotHandler;
+    DisplayHandler    displayHandler;
+    DatabaseHandler   databaseHandler;
+    CoinSlotHandler   coinSlotHandler;
+    CoinReturnHandler coinReturnHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +26,19 @@ public class VendingMachine extends AppCompatActivity {
     }
 
     private void initialize(){
-//        buttonHandler = new ButtonHandler(this);
-        displayHandler = new DisplayHandler(this);
-        databaseHandler = new DatabaseHandler(this);
-        coinSlotHandler = new CoinSlotHandler(this);
+//        buttonHandler     = new ButtonHandler(this);
+        displayHandler    = new DisplayHandler(this);
+        databaseHandler   = new DatabaseHandler(this);
+        coinSlotHandler   = new CoinSlotHandler(this);
+        coinReturnHandler = new CoinReturnHandler(this);
     }
 
     public void onButtonClicked(View v){
         switch (v.getId()){
             case R.id.buttonReturnCoins:
+                coinReturnHandler.onCoinReturnClicked(coinSlotHandler.getListInsertedCoins());
+                coinSlotHandler.coinReturnClicked();
+                displayHandler.updateDisplay();
                 break;
             case R.id.buttonAddCoin:
                 showCoinSelectDialog(this);
@@ -41,6 +46,7 @@ public class VendingMachine extends AppCompatActivity {
             case R.id.buttonProductBay:
                 break;
             case R.id.buttonCoinReturnBay:
+                coinReturnHandler.showReturnedCoinsDialog(this);
                 break;
             case R.id.buttonProduct1:
                 break;
