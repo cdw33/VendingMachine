@@ -191,7 +191,7 @@ public class VendingMachineUiTests {
         onView(withId(R.id.tvReturnedCoins)).check(matches(withText("")));
 
         //Close bay
-        onView(withText("Cancel")).perform(click());
+        onView(withText("Close")).perform(click());
     }
 
     public void openProductRetrievalBay(String expectedString){
@@ -211,6 +211,6 @@ public class VendingMachineUiTests {
         onView(withId(R.id.tvDispensedProducts)).check(matches(withText("")));
 
         //Close bay
-        onView(withText("Cancel")).perform(click());
+        onView(withText("Close")).perform(click());
     }
 }
