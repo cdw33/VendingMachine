@@ -64,23 +64,7 @@ public class VendingMachineUiTests {
         SystemClock.sleep(500);
         onView(withId(R.id.tvLCD)).check(matches(withText("THANK YOU")));
 
-        //Open Product Retrieval Bay
-        onView(withId(R.id.buttonProductBay)).perform(click());
-
-        //Check that correct product has been dispensed
-        onView(withId(R.id.tvDispensedProducts)).check(matches(withText(expectedString)));
-
-        //Remove product from bay
-        onView(withText("Remove Products")).perform(click());
-
-        //Open Product Retrieval Bay again
-        onView(withId(R.id.buttonProductBay)).perform(click());
-
-        //Ensure bay is empty
-        onView(withId(R.id.tvDispensedProducts)).check(matches(withText("")));
-
-        //Close bay
-        onView(withText("Cancel")).perform(click());
+        openProductRetrievalBay(expectedString);
     }
 
     //Test selecting product with not enough money inserted
@@ -132,8 +116,8 @@ public class VendingMachineUiTests {
     @Test
     public void testCoinReturn() {
 
-        String expectedString = "Weight: 1.7500g, Diameter: 5.6700mm" +
-                         ",\nWidth: 24.2600mm, Value: $0.25\n\n";
+        String expectedString = "Weight: 5.6700g, Diameter: 24.2600mm" +
+                ",\nWidth: 1.7500mm, Value: $0.25\n\n";
 
         //Insert a quarter in coin slot
         onView(withId(R.id.buttonAddCoin)).perform(click());
@@ -146,6 +130,51 @@ public class VendingMachineUiTests {
         //Verify Display resets
         onView(withId(R.id.tvLCD)).check(matches(withText("INSERT COIN")));
 
+        openCoinReturnBay(expectedString);
+    }
+
+    //Test Coin Return
+    @Test
+    public void testMakeChange() {
+
+        String expectedChangeString = "Weight: 5.0000g, Diameter: 21.2100mm,\n" +
+                "Width: 1.9500mm, Value: $0.05\n\nWeight: 2.2680g, Diameter: 17.9100mm,\n" +
+                "Width: 1.3500mm, Value: $0.10\n\n";
+
+        String expectedProductString = "Chips\n\n";
+
+        //Insert $0.65
+        onView(withId(R.id.buttonAddCoin)).perform(click());
+        onView(withId(R.id.buttonQuarter)).perform(click());
+
+        onView(withId(R.id.tvLCD)).check(matches(withText("$0.25")));
+
+        onView(withId(R.id.buttonAddCoin)).perform(click());
+        onView(withId(R.id.buttonQuarter)).perform(click());
+
+        onView(withId(R.id.tvLCD)).check(matches(withText("$0.50")));
+
+        onView(withId(R.id.buttonAddCoin)).perform(click());
+        onView(withId(R.id.buttonDime)).perform(click());
+
+        onView(withId(R.id.tvLCD)).check(matches(withText("$0.60")));
+
+        onView(withId(R.id.buttonAddCoin)).perform(click());
+        onView(withId(R.id.buttonNickel)).perform(click());
+
+        onView(withId(R.id.tvLCD)).check(matches(withText("$0.65")));
+
+        //Select $0.50 Product
+        onView(withId(R.id.buttonProduct2)).perform(click());
+
+        //Check that extra coins have been returned
+        openCoinReturnBay(expectedChangeString);
+
+        //Check that product was delivered
+        openProductRetrievalBay(expectedProductString);
+    }
+
+    public void openCoinReturnBay(String expectedString){
         //Open Coin Return Bay
         onView(withId(R.id.buttonCoinReturnBay)).perform(click());
 
@@ -165,6 +194,23 @@ public class VendingMachineUiTests {
         onView(withText("Cancel")).perform(click());
     }
 
+    public void openProductRetrievalBay(String expectedString){
+        //Open Product Retrieval Bay
+        onView(withId(R.id.buttonProductBay)).perform(click());
 
+        //Check that correct product has been dispensed
+        onView(withId(R.id.tvDispensedProducts)).check(matches(withText(expectedString)));
 
+        //Remove product from bay
+        onView(withText("Remove Products")).perform(click());
+
+        //Open Product Retrieval Bay again
+        onView(withId(R.id.buttonProductBay)).perform(click());
+
+        //Ensure bay is empty
+        onView(withId(R.id.tvDispensedProducts)).check(matches(withText("")));
+
+        //Close bay
+        onView(withText("Cancel")).perform(click());
+    }
 }

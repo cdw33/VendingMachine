@@ -25,12 +25,12 @@ public class ChangeHandler extends VendingMachine {
     DatabaseHandler db;
     CallbackInterface ic;
 
-    ArrayList<Coin> listInsertedCoins; //Holds coins currently inserted
-    ArrayList<Coin> listReturnedCoins; //Holds coins in return bay
+    private ArrayList<Coin> listInsertedCoins; //Holds coins currently inserted
+    private ArrayList<Coin> listReturnedCoins; //Holds coins in return bay
 
     // Coin specification - source U.S. Mint
     // https://www.usmint.gov/learn/coin-and-medal-programs/coin-specifications
-    // Coin(float diameter (millimeters), float width (mm), float weight (grams), float value ($))
+    // Coin(int key, float diameter (millimeters), float width (mm), float weight (grams), float value ($))
     Coin penny      = new Coin(2.5f, 19.05f, 1.52f, 0.01f);
     Coin nickel     = new Coin(1, 5.0f, 21.21f, 1.95f, 0.05f);
     Coin dime       = new Coin(2, 2.268f, 17.91f, 1.35f, 0.1f);
@@ -70,9 +70,13 @@ public class ChangeHandler extends VendingMachine {
             return;
         }
 
-        listInsertedCoins.add(coin);
+        addCoinToInsertedList(coin);
 
         ic.updateDisplay();
+    }
+
+    public void addCoinToInsertedList(Coin coin){
+        listInsertedCoins.add(coin);
     }
 
     public ArrayList<Coin> getListInsertedCoins(){
@@ -81,6 +85,10 @@ public class ChangeHandler extends VendingMachine {
 
     public boolean isCoinSlotEmpty(){
         return listInsertedCoins.isEmpty();
+    }
+
+    public void clearInsertedCoinsList(){
+        listInsertedCoins.clear();
     }
 
     //Returns total value of all inserted coins
@@ -137,7 +145,7 @@ public class ChangeHandler extends VendingMachine {
             db.incrementQuantityOfCoin(coin.getKey()); //Add to change DB
         }
 
-        listInsertedCoins.clear();
+        clearInsertedCoinsList();
 
         ic.updateDisplay();
     }
@@ -157,7 +165,7 @@ public class ChangeHandler extends VendingMachine {
             @Override
             public void onShow(DialogInterface dialog) {
                 final Button buttonPenny       = (Button) coinView.findViewById(R.id.buttonPenny);
-                final Button buttonnickel      = (Button) coinView.findViewById(R.id.buttonNickel);
+                final Button buttonNickel      = (Button) coinView.findViewById(R.id.buttonNickel);
                 final Button buttonDime        = (Button) coinView.findViewById(R.id.buttonDime);
                 final Button buttonQuarter     = (Button) coinView.findViewById(R.id.buttonQuarter);
                 final Button buttonRandom      = (Button) coinView.findViewById(R.id.buttonRandom);
@@ -171,7 +179,7 @@ public class ChangeHandler extends VendingMachine {
                         onCoinSelect(new Coin(penny));
                     }
                 });
-                buttonnickel.setOnClickListener(new View.OnClickListener() {
+                buttonNickel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         onCoinSelect(new Coin(nickel));
@@ -266,8 +274,8 @@ public class ChangeHandler extends VendingMachine {
                 String returnedCoinSB = "";
                 for(Coin coin : listReturnedCoins){
                     returnedCoinSB = returnedCoinSB + "Weight: " + String.format("%.4f", coin.getWeight()) + "g" +
-                            ", Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm\n" +
-                            ", Width: " + String.format("%.4f", coin.getWidth()) + "mm" +
+                            ", Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm,\n" +
+                            "Width: " + String.format("%.4f", coin.getWidth()) + "mm" +
                             ", Value: " + (coin.getValue() == -1.0f ? "?" : "$" + String.format("%.2f", coin.getValue())) + "\n\n";
                 }
                 tvReturnedCoins.setText(returnedCoinSB);

@@ -29,7 +29,7 @@ public class Coin {
         key = 0;
     }
 
-    Coin(float d, float wi, float we){ //Create coin of unknown value
+    Coin(float we, float d, float wi){ //Create coin of unknown value
         diameter = d;
         width = wi;
         weight = we;
@@ -39,7 +39,7 @@ public class Coin {
     }
 
     //Create coin with known value
-    Coin(float d, float wi, float we, float v){
+    Coin(float we, float d, float wi, float v){
         diameter = d;
         width = wi;
         weight = we;
@@ -47,7 +47,7 @@ public class Coin {
         key = 0;
     }
 
-    Coin(int k, float d, float wi, float we, float v){
+    Coin(int k, float we, float d, float wi, float v){
         key = k;
         diameter = d;
         width = wi;
