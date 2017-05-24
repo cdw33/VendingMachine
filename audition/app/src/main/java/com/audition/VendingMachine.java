@@ -2,7 +2,6 @@ package com.audition;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 // This is the main class for the Vending Machine. This class contains objects which perform
@@ -11,10 +10,10 @@ import android.view.View;
 
 public class VendingMachine extends AppCompatActivity implements CallbackInterface {
 
-    DisplayHandler    displayHandler;
-    DatabaseHandler   databaseHandler;
-    ChangeHandler     changeHandler;
-    ProductHandler    productHandler;
+    DisplayHandler  displayHandler;
+    DatabaseHandler databaseHandler;
+    ChangeHandler   changeHandler;
+    ProductHandler  productHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +27,16 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
     }
 
     private void initialize(){
-        databaseHandler   = new DatabaseHandler(this);
-        displayHandler    = new DisplayHandler(this);
-        changeHandler     = new ChangeHandler(this, databaseHandler);
-        productHandler    = new ProductHandler(this, databaseHandler);
+        databaseHandler = new DatabaseHandler(this);
+        displayHandler  = new DisplayHandler(this);
+        changeHandler   = new ChangeHandler(this, databaseHandler);
+        productHandler  = new ProductHandler(this, databaseHandler);
+
+        //Check if change can be made for all next purchase
+        if (!changeHandler.isChangeAvailableForNextPurchase()) { //If not, update display accordingly
+            displayHandler.setIdleMessage(displayHandler.EXACT_CHANGE);
+            updateDisplay();
+        }
     }
 
     @Override
@@ -74,6 +79,10 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
 
         //Update Display
         displayHandler.flashMessage(displayHandler.THANK_YOU);
+
+        //Check if change can be made for all next purchase
+        displayHandler.setIdleMessage(changeHandler.isChangeAvailableForNextPurchase() ?
+                displayHandler.INSERT_COIN : displayHandler.EXACT_CHANGE);
     }
 
     //Each button in its respective layout has its onClick value set to this function.

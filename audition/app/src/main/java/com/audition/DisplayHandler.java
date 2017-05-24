@@ -26,6 +26,8 @@ public class DisplayHandler extends VendingMachine {
 
     State state;
 
+    String idleMessage;
+
     DisplayHandler(Activity activity){
         this.activity = activity;
 
@@ -37,6 +39,8 @@ public class DisplayHandler extends VendingMachine {
         tvDisplay.setText(INSERT_COIN);
 
         state = State.IDLE;
+
+        idleMessage = INSERT_COIN;
     }
 
     public void setDisplayText(String msg){
@@ -48,7 +52,7 @@ public class DisplayHandler extends VendingMachine {
     }
 
     public void updateDisplay(){
-        setDisplayText(INSERT_COIN);
+        setDisplayText(idleMessage);
     }
 
     public void updateDisplay(float currentTotal){
@@ -58,6 +62,10 @@ public class DisplayHandler extends VendingMachine {
         }
 
         updateDisplay();
+    }
+
+    public void setIdleMessage(String msg){
+        idleMessage = msg;
     }
 
     // TODO - Make Generic Method to handle multiple input cases
@@ -80,7 +88,13 @@ public class DisplayHandler extends VendingMachine {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setDisplayText(resetMsg); //Restore original display contents
+                        if(resetMsg.equals(EXACT_CHANGE) || resetMsg.equals(INSERT_COIN)){
+                            updateDisplay();
+                        }
+                        else {
+                            setDisplayText(resetMsg); //Restore original display contents
+                        }
+
                         state = State.IDLE;
                     }
                 });

@@ -3,8 +3,6 @@ package com.audition;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +12,6 @@ import android.widget.Toast;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 // This class contains many Coin and change related functionality. Most of the logic for the Coin
@@ -35,7 +32,7 @@ public class ChangeHandler extends VendingMachine {
     // https://www.usmint.gov/learn/coin-and-medal-programs/coin-specifications
     // Coin(float diameter (millimeters), float width (mm), float weight (grams), float value ($))
     Coin penny      = new Coin(2.5f, 19.05f, 1.52f, 0.01f);
-    Coin nickle     = new Coin(1, 5.0f, 21.21f, 1.95f, 0.05f);
+    Coin nickel     = new Coin(1, 5.0f, 21.21f, 1.95f, 0.05f);
     Coin dime       = new Coin(2, 2.268f, 17.91f, 1.35f, 0.1f);
     Coin quarter    = new Coin(3, 5.67f, 24.26f, 1.75f, 0.25f);
     Coin halfDollar = new Coin(11.034f, 30.61f, 2.15f, 0.5f);
@@ -56,7 +53,7 @@ public class ChangeHandler extends VendingMachine {
         listReturnedCoins = new ArrayList<>();
 
         coinKeyMap = new HashMap<>();
-        coinKeyMap.put(nickle.getKey(), nickle);
+        coinKeyMap.put(nickel.getKey(), nickel);
         coinKeyMap.put(dime.getKey(), dime);
         coinKeyMap.put(quarter.getKey(), quarter);
     }
@@ -102,9 +99,9 @@ public class ChangeHandler extends VendingMachine {
         if(coin.isSame(penny)){
             coin.setValue(penny.getValue());
         }
-        else if(coin.isSame(nickle)){
-            coin.setValue(nickle.getValue());
-            coin.setKey(db.NICKLE_KEY);
+        else if(coin.isSame(nickel)){
+            coin.setValue(nickel.getValue());
+            coin.setKey(db.NICKEL_KEY);
         }
         else if (coin.isSame(dime)) {
             coin.setValue(dime.getValue());
@@ -123,9 +120,9 @@ public class ChangeHandler extends VendingMachine {
     }
 
     //Valid means coin can be accepted. A US Penny is authentic but not valid since
-    //we only accept nickle, dime, quarter
+    //we only accept nickel, dime, quarter
     private boolean isCoinValid(Coin coin){
-        if(coin.getValue() == nickle.getValue() ||
+        if(coin.getValue() == nickel.getValue() ||
                 coin.getValue() == dime.getValue() ||
                 coin.getValue() ==quarter.getValue()){
             return true;
@@ -160,7 +157,7 @@ public class ChangeHandler extends VendingMachine {
             @Override
             public void onShow(DialogInterface dialog) {
                 final Button buttonPenny       = (Button) coinView.findViewById(R.id.buttonPenny);
-                final Button buttonNickle      = (Button) coinView.findViewById(R.id.buttonNickle);
+                final Button buttonnickel      = (Button) coinView.findViewById(R.id.buttonNickel);
                 final Button buttonDime        = (Button) coinView.findViewById(R.id.buttonDime);
                 final Button buttonQuarter     = (Button) coinView.findViewById(R.id.buttonQuarter);
                 final Button buttonRandom      = (Button) coinView.findViewById(R.id.buttonRandom);
@@ -174,10 +171,10 @@ public class ChangeHandler extends VendingMachine {
                         onCoinSelect(new Coin(penny));
                     }
                 });
-                buttonNickle.setOnClickListener(new View.OnClickListener() {
+                buttonnickel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onCoinSelect(new Coin(nickle));
+                        onCoinSelect(new Coin(nickel));
                     }
                 });
                 buttonDime.setOnClickListener(new View.OnClickListener() {
@@ -269,8 +266,8 @@ public class ChangeHandler extends VendingMachine {
                 String returnedCoinSB = "";
                 for(Coin coin : listReturnedCoins){
                     returnedCoinSB = returnedCoinSB + "Weight: " + String.format("%.4f", coin.getWeight()) + "g" +
-                            ", Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm" +
-                            ",\nWidth: " + String.format("%.4f", coin.getWidth()) + "mm" +
+                            ", Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm\n" +
+                            ", Width: " + String.format("%.4f", coin.getWidth()) + "mm" +
                             ", Value: " + (coin.getValue() == -1.0f ? "?" : "$" + String.format("%.2f", coin.getValue())) + "\n\n";
                 }
                 tvReturnedCoins.setText(returnedCoinSB);
@@ -298,6 +295,26 @@ public class ChangeHandler extends VendingMachine {
     /**************************
      *   Change Calculation   *
      **************************/
+    
+    // This required feature is rather vague. If I have a single nickel, I can make change if the
+    // buyer only over pays by a nickel (ie. $0.65 item, paid w/ quarter, quarter, dime, dime, is a
+    // nickel change), but not by anything else. I will make the assumption that if I have at least
+    // $1.00 in quarters, $1.00 in dimes, and $0.50 in nickels, I can make change for anything.
+    // Obviously if I have no coins, I can't make change either.
+    public boolean isChangeAvailableForNextPurchase(){
+
+        final int requiredNickelQty  = 10;
+        final int requiredDimeQty    = 10;
+        final int requiredQuarterQty = 4;
+
+        if(db.getQuantityOfCoin(nickel.getKey()) < requiredNickelQty ||
+                db.getQuantityOfCoin(dime.getKey()) < requiredDimeQty ||
+                db.getQuantityOfCoin(quarter.getKey()) < requiredQuarterQty) {
+            return false;
+        }
+
+        return true;
+    }
 
     public void makeChange(float productPrice, float currentTotal){
         float changeNeeded = Math.abs(productPrice - currentTotal);
@@ -332,7 +349,7 @@ public class ChangeHandler extends VendingMachine {
     dynamic programming and Breadth-First Searching of trees. They all appeared rather slow
     and didn't exactly fit this use case. My solution is simply to attempt to make change like a
     cashier would. Collect quarters until any more would be too much change, repeat for dimes,
-    then nickles. Because we only have those 3 coins, and we know that all change requests will
+    then nickels. Because we only have those 3 coins, and we know that all change requests will
     be for multiples of 5, the solution was a lot simpler than first thought. At its worst case,
     this method will run in O(n), where n is the number of coins in the vending machine.
     */
@@ -340,7 +357,7 @@ public class ChangeHandler extends VendingMachine {
 
         //Get change from DB
         Map<Integer, Integer> totalCoins = new HashMap<>();
-        totalCoins.put(nickle.getKey(), db.getQuantityOfCoin(nickle.getKey()));
+        totalCoins.put(nickel.getKey(), db.getQuantityOfCoin(nickel.getKey()));
         totalCoins.put(dime.getKey(), db.getQuantityOfCoin(dime.getKey()));
         totalCoins.put(quarter.getKey(), db.getQuantityOfCoin(quarter.getKey()));
 
@@ -351,14 +368,14 @@ public class ChangeHandler extends VendingMachine {
 
         //Initialize Map to hold change
         Map<Integer, Integer> changeMap = new HashMap<>();
-        changeMap.put(nickle.getKey(), 0);
+        changeMap.put(nickel.getKey(), 0);
         changeMap.put(dime.getKey(), 0);
         changeMap.put(quarter.getKey(), 0);
 
         //Calculate change
         changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, quarter);
         changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, dime);
-        changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, nickle);
+        changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, nickel);
 
         //Verify change can be make
         if (changeNeeded >= 0.01f) {

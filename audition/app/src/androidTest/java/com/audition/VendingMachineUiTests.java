@@ -53,7 +53,7 @@ public class VendingMachineUiTests {
         onView(withId(R.id.tvLCD)).check(matches(withText("$0.60")));
 
         onView(withId(R.id.buttonAddCoin)).perform(click());
-        onView(withId(R.id.buttonNickle)).perform(click());
+        onView(withId(R.id.buttonNickel)).perform(click());
 
         onView(withId(R.id.tvLCD)).check(matches(withText("$0.65")));
 

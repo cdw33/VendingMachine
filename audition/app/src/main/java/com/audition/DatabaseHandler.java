@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 // This class manages a database containing information about the inventory of products and coins
 // stored within the vending machine. The manipulation of data with the DB is controlled solely
@@ -28,17 +27,9 @@ public class DatabaseHandler extends VendingMachine {
     final String QUANTITY = "quantity";
     final String VALUE    = "value";
 
-    final int NICKLE_KEY  = 1;
+    final int NICKEL_KEY  = 1;
     final int DIME_KEY    = 2;
     final int QUARTER_KEY = 3;
-
-
-//    enum QueryTypes{
-//        CREATE_TABLE,
-//        DROP_TABLE,
-//        INSERT,
-//        SELECT,
-//    }
 
     DatabaseHandler(Activity activity){
         this.activity = activity;
@@ -72,7 +63,7 @@ public class DatabaseHandler extends VendingMachine {
         addProductsToDB(4, "Gum", 0.35f, 0);
 
         addCoinsToDB(1, 0.05f, 15);
-        addCoinsToDB(2, 0.10f, 12);
+        addCoinsToDB(2, 0.10f, 3);
         addCoinsToDB(3, 0.25f, 8);
     }
 
