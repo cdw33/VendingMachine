@@ -47,6 +47,14 @@ public class Coin {
         key = 0;
     }
 
+    Coin(int k, float d, float wi, float we, float v){
+        key = k;
+        diameter = d;
+        width = wi;
+        weight = we;
+        value = v;
+    }
+
     Coin(Coin copyCoin){
         this.diameter = copyCoin.getDiameter();
         this.width    = copyCoin.getWidth();

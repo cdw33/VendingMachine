@@ -119,7 +119,6 @@ public class DatabaseHandler extends VendingMachine {
     }
 
     private Cursor queryBuilder(String columnName, String tableName, String keyName, String keyValue){
-//        Cursor cursor = db.rawQuery("SELECT quantity FROM inventory WHERE key = ?", new String[] { String.valueOf(productID) });
         return db.rawQuery("SELECT " + columnName + " FROM " + tableName + " WHERE " + keyName + " = ?", new String[] { keyValue });
     }
 

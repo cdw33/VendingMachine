@@ -25,22 +25,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:background="@android:color/darker_gray"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Vending Machine"
-                    android:textAppearance="@android:style/TextAppearance.Large" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -48,8 +32,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_green_dark"
-                    android:orientation="vertical">
+                    android:background="@drawable/border"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -62,24 +47,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="Coke"
-                            android:onClick="onButtonClicked"/>
+                            android:onClick="onButtonClicked"
+                            android:text="Coke" />
 
                         <Button
                             android:id="@+id/buttonProduct2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="Chips"
-                            android:onClick="onButtonClicked"/>
+                            android:onClick="onButtonClicked"
+                            android:text="Chips" />
 
                         <Button
                             android:id="@+id/buttonProduct3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="Candy"
-                            android:onClick="onButtonClicked"/>
+                            android:onClick="onButtonClicked"
+                            android:text="Candy" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -93,22 +78,26 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="Gum"
-                            android:onClick="onButtonClicked"/>
+                            android:onClick="onButtonClicked"
+                            android:text="Gum" />
 
                         <Button
                             android:id="@+id/buttonProduct5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="onButtonClicked"/>
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:enabled="false"
+                            android:onClick="onButtonClicked" />
 
                         <Button
                             android:id="@+id/buttonProduct6"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="onButtonClicked"/>
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:enabled="false"
+                            android:onClick="onButtonClicked" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -122,21 +111,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="onButtonClicked"/>
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:enabled="false"
+                            android:onClick="onButtonClicked" />
 
                         <Button
                             android:id="@+id/buttonProduct8"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="onButtonClicked"/>
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:enabled="false"
+                            android:onClick="onButtonClicked" />
 
                         <Button
                             android:id="@+id/buttonProduct9"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="onButtonClicked"/>
+                            android:backgroundTint="@android:color/darker_gray"
+                            android:enabled="false"
+                            android:onClick="onButtonClicked" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -151,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:background="@android:color/holo_blue_bright"
+                        android:background="#afafaf"
                         android:orientation="horizontal">
 
                         <TextView
@@ -160,14 +155,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="INSERT COIN" />
+                            android:text="INSERT COIN"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="?android:attr/colorPressedHighlight"
+                        android:background="@color/colorPrimary"
                         android:orientation="horizontal">
 
                         <Button
@@ -175,8 +171,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:backgroundTint="#9a3333"
+                            android:onClick="onButtonClicked"
                             android:text="Coin Return"
-                            android:onClick="onButtonClicked" />
+                            android:textColor="@android:color/white" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -204,16 +202,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Product Bay"
-                android:onClick="onButtonClicked" />
+                android:onClick="onButtonClicked"
+                android:text="Product Bay" />
 
             <Button
                 android:id="@+id/buttonCoinReturnBay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Return Slot"
-                android:onClick="onButtonClicked" />
+                android:onClick="onButtonClicked"
+                android:text="Return Slot" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

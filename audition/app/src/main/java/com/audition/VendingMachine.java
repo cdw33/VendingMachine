@@ -21,6 +21,9 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vending_machine);
 
+        getSupportActionBar().setTitle("Vending Machine");
+        getSupportActionBar().setSubtitle("Audition");
+
         initialize();
     }
 
@@ -52,7 +55,11 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
             return;
         }
 
-        //TODO - Check if exact change is required
+        //Check if exact change is required
+        if (!changeHandler.canChangeBeMade(productPrice)) { //If change cannot be made
+            displayHandler.flashMessage(displayHandler.EXACT_CHANGE);
+            return;
+        }
 
         //Move inserted coins into coin storage
         changeHandler.moveCoinsToStorage();

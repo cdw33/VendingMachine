@@ -3,6 +3,8 @@ package com.audition;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 // This class contains many Coin and change related functionality. Most of the logic for the Coin
 // insert slot and the Coin return button & bay can be found in here. The methods are split between
@@ -29,9 +34,9 @@ public class ChangeHandler extends VendingMachine {
     // https://www.usmint.gov/learn/coin-and-medal-programs/coin-specifications
     // Coin(float diameter (millimeters), float width (mm), float weight (grams), float value ($))
     Coin penny      = new Coin(2.5f, 19.05f, 1.52f, 0.01f);
-    Coin nickle     = new Coin(5.0f, 21.21f, 1.95f, 0.05f);
-    Coin dime       = new Coin(2.268f, 17.91f, 1.35f, 0.1f);
-    Coin quarter    = new Coin(5.67f, 24.26f, 1.75f, 0.25f);
+    Coin nickle     = new Coin(1, 5.0f, 21.21f, 1.95f, 0.05f);
+    Coin dime       = new Coin(2, 2.268f, 17.91f, 1.35f, 0.1f);
+    Coin quarter    = new Coin(3, 5.67f, 24.26f, 1.75f, 0.25f);
     Coin halfDollar = new Coin(11.034f, 30.61f, 2.15f, 0.5f);
     Coin dollar     = new Coin(8.1f, 26.49f, 2.0f, 1.0f);
 
@@ -281,5 +286,79 @@ public class ChangeHandler extends VendingMachine {
 
         returnSlotDialog.show();
     }
+
+    public boolean canChangeBeMade(float productPrice){
+
+        float changeNeeded = Math.abs(getSumOfInsertedCoins() - productPrice);
+
+        //If change cannot be made, an empty Map will be returned
+        return !makeChange(changeNeeded, false).isEmpty();
+    }
+
+    public Map<Integer, Integer> makeChange(float changeNeeded, boolean useInsertedCoins){
+
+        //Get change from DB
+        Map<Integer, Integer> totalCoins = new HashMap<>();
+        totalCoins.put(nickle.getKey(), db.getQuantityOfCoin(nickle.getKey()));
+        totalCoins.put(dime.getKey(), db.getQuantityOfCoin(dime.getKey()));
+        totalCoins.put(quarter.getKey(), db.getQuantityOfCoin(quarter.getKey()));
+
+        if (useInsertedCoins) { //Use coins in coin slot if requested
+            //include change in coin slot
+            for(Coin coin: listInsertedCoins){
+                totalCoins.put(coin.getKey(), totalCoins.get(coin.getKey()) + 1);
+            }
+        }
+
+        //Initialize Map to hold change
+        Map<Integer, Integer> changeMap = new HashMap<>();
+        changeMap.put(nickle.getKey(), 0);
+        changeMap.put(dime.getKey(), 0);
+        changeMap.put(quarter.getKey(), 0);
+
+        //Calculate change
+        changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, quarter);
+        changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, dime);
+        changeNeeded = changeHelper(totalCoins, changeMap, changeNeeded, nickle);
+
+        //Verify change can be make
+        if (changeNeeded >= 0.01f) {
+            //Change cannot be made
+            Log.e("CHANGE_TAG","exact change needed\nremaining change: " + changeNeeded + "\n");
+            changeMap.clear();
+        }
+
+        return changeMap;
+    }
+
+
+
+    private float changeHelper(Map<Integer, Integer> totalCoins, Map<Integer, Integer> changeMap, float changeNeeded, Coin coin){
+        int key = coin.getKey();
+        float val = coin.getValue();
+
+        while(totalCoins.get(key) > 0 && changeNeeded - val >= 0 ){
+            changeNeeded -= val;
+            totalCoins.put(key, totalCoins.get(key) - 1);
+            changeMap.put(key, changeMap.get(key) + 1);
+        }
+
+        return changeNeeded;
+    }
+
+    private void printMap(Map<Integer, Integer> changeMap){
+        String sb = "map:\n";
+        sb = sb + "nickle: " + changeMap.get(nickle.getKey());
+        sb = sb + "\ndime: " + changeMap.get(dime.getKey());
+        sb = sb + "\nquarter: " + changeMap.get(quarter.getKey());
+
+        Log.e("CHANGE_TAG", sb);
+    }
+
+
+
+
+
+
 
 }
