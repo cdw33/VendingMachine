@@ -39,6 +39,7 @@ public class DatabaseHandler extends VendingMachine {
 
     // DATABASE INITIALIZATION
 
+    //Create new DB and tables
     private void initializeDatabase(){
         db = activity.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
@@ -66,19 +67,6 @@ public class DatabaseHandler extends VendingMachine {
         addCoinsToDB(2, 0.10f, 3);
         addCoinsToDB(3, 0.25f, 8);
     }
-
-//    private String createQuery(QueryTypes qt){
-//        switch (qt){
-//            case CREATE_TABLE:
-//                break;
-//            case DROP_TABLE:
-//                break;
-//            case INSERT:
-//                break;
-//            case SELECT:
-//                break;
-//        }
-//    }
 
     // PRODUCT INVENTORY DATABASE
 

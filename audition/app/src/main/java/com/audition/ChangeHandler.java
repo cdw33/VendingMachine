@@ -104,6 +104,7 @@ public class ChangeHandler extends VendingMachine {
         return totalValue;
     }
 
+    //Compare given coin with known coin specs to determine value
     private void determineCoinValue(Coin coin){
         //If coin is valid US currency, update value
         if(coin.isSame(penny)){
@@ -141,6 +142,7 @@ public class ChangeHandler extends VendingMachine {
         return false;
     }
 
+    //Remove coins from insert slot and move into coin storage
     public void moveCoinsToStorage(){
         //Add each coin in coin slot to DB
         for(Coin coin : listInsertedCoins){ //For each inserted coin
@@ -267,8 +269,6 @@ public class ChangeHandler extends VendingMachine {
 
         coinSelectDialog.getButton(coinSelectDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-
-
     }
 
     /***********************
@@ -367,6 +367,7 @@ public class ChangeHandler extends VendingMachine {
         return true;
     }
 
+    //Calculate change, then remove coins from coin storage and move to return tray
     public void makeChange(float productPrice, float currentTotal){
         float changeNeeded = Math.abs(productPrice - currentTotal);
         changeNeeded = round(changeNeeded, 2); //round up to 2 decimal places
@@ -387,6 +388,7 @@ public class ChangeHandler extends VendingMachine {
         }
     }
 
+    //Check if change can be made for the current total
     public boolean canChangeBeMade(float currentTotal, float productPrice){
         float changeNeeded = Math.abs(currentTotal - productPrice);
         changeNeeded = round(changeNeeded, 2); //round up to 2 decimal places

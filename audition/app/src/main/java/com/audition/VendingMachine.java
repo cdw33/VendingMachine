@@ -39,11 +39,12 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
         }
     }
 
-    @Override
+    @Override //Callback from Change Handler to update Display
     public void updateDisplay(){
         displayHandler.updateDisplay(changeHandler.getSumOfInsertedCoins());
     }
 
+    // Logic for vending products
     public void onProductButtonClicked(int productID){
         float productPrice = databaseHandler.getPriceOfProduct(productID);
         float currentTotal = changeHandler.getSumOfInsertedCoins();

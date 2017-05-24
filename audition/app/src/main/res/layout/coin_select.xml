@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\nPenny\n" />
 
         <Button
@@ -23,14 +24,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Quarter" />
+            android:gravity="center"
+            android:text="\nQuarter\n" />
 
         <Button
             android:id="@+id/buttonRandom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Random" />
+            android:gravity="center"
+            android:text="\nRandom\n" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\nNickel\n" />
 
         <Button
@@ -51,13 +55,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="\nHalf Dollar\n" />
+            android:gravity="center"
+            android:text="Half Dollar" />
 
         <Button
             android:id="@+id/button9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\n \n"
             android:visibility="invisible" />
     </LinearLayout>
@@ -73,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\nDime\n" />
 
         <Button
@@ -80,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\nDollar\n" />
 
         <Button
@@ -87,6 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="\n \n"
             android:visibility="invisible" />
     </LinearLayout>
