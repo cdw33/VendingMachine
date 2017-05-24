@@ -14,21 +14,21 @@
         <Button
             android:id="@+id/buttonPenny"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Penny" />
+            android:text="\nPenny\n" />
 
         <Button
             android:id="@+id/buttonQuarter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Quarter" />
 
         <Button
             android:id="@+id/buttonRandom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Random" />
     </LinearLayout>
@@ -42,22 +42,23 @@
         <Button
             android:id="@+id/buttonNickel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Nickel" />
+            android:text="\nNickel\n" />
 
         <Button
             android:id="@+id/buttonHalfDollar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Half Dollar" />
+            android:text="\nHalf Dollar\n" />
 
         <Button
             android:id="@+id/button9"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="\n \n"
             android:visibility="invisible" />
     </LinearLayout>
 
@@ -70,22 +71,23 @@
         <Button
             android:id="@+id/buttonDime"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Dime" />
+            android:text="\nDime\n" />
 
         <Button
             android:id="@+id/buttonDollar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Dollar" />
+            android:text="\nDollar\n" />
 
         <Button
             android:id="@+id/button10"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:text="\n \n"
             android:visibility="invisible" />
     </LinearLayout>
 

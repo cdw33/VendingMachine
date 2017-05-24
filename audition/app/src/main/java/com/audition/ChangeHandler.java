@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -231,18 +232,33 @@ public class ChangeHandler extends VendingMachine {
                         btnTxt = btnTxt.equals(UNLOCK) ? LOCK : UNLOCK;
 
                         coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setText(btnTxt);
+
+                        updateDialogTitle();
                     }
                 });
             }
 
             public void onCoinSelect(Coin coin){
-                float sum = getSumOfInsertedCoins();
                 onCoinInserted(coin);
-                displayHandler.updateDisplay(sum);
+                ic.updateDisplay();
+
+                updateDialogTitle();
 
                 String lockStr = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText().toString();
                 if (lockStr.equals(LOCK)) {
                     coinSelectDialog.dismiss();
+                }
+            }
+
+            public void updateDialogTitle(){
+                String lockStr = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText().toString();
+
+                if (lockStr.equals(LOCK)) {
+                    coinSelectDialog.setTitle("Coin Select");
+                }
+                else{
+                    float currentTotal = getSumOfInsertedCoins();
+                    coinSelectDialog.setTitle("Coin Select     -     $" + String.format("%.2f", currentTotal) + "     -");
                 }
             }
         });
@@ -251,6 +267,8 @@ public class ChangeHandler extends VendingMachine {
 
         coinSelectDialog.getButton(coinSelectDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+
+
     }
 
     /***********************
@@ -435,6 +453,6 @@ public class ChangeHandler extends VendingMachine {
     private static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
+        return bd.floatValue() + 0.001f;
     }
 }
