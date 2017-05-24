@@ -2,6 +2,7 @@ package com.audition;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,7 @@ public class ProductHandler extends VendingMachine {
                 .setView(returnView)
                 .setTitle("Product Bay")
                 .setPositiveButton("Remove Products", null)
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNegativeButton("Close", null)
                 .setCancelable(true)
                 .create();
 
@@ -98,6 +99,9 @@ public class ProductHandler extends VendingMachine {
         });
 
         dispensedProductDialog.show();
+
+        dispensedProductDialog.getButton(dispensedProductDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        dispensedProductDialog.getButton(dispensedProductDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
 
 }

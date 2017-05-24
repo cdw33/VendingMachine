@@ -2,6 +2,7 @@ package com.audition;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,23 +155,30 @@ public class ChangeHandler extends VendingMachine {
         LayoutInflater li = LayoutInflater.from(activity);
         final View coinView = li.inflate(R.layout.coin_select, null);
 
+        final String UNLOCK = "Unlock";
+        final String LOCK   = "Lock";
+
         final AlertDialog coinSelectDialog = new AlertDialog.Builder(activity)
                 .setView(coinView)
                 .setTitle("Coin Select")
-                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton("Lock", null)
+                .setNegativeButton("Close", null)
                 .setCancelable(true)
                 .create();
 
         coinSelectDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                final Button buttonPenny       = (Button) coinView.findViewById(R.id.buttonPenny);
-                final Button buttonNickel      = (Button) coinView.findViewById(R.id.buttonNickel);
-                final Button buttonDime        = (Button) coinView.findViewById(R.id.buttonDime);
-                final Button buttonQuarter     = (Button) coinView.findViewById(R.id.buttonQuarter);
-                final Button buttonRandom      = (Button) coinView.findViewById(R.id.buttonRandom);
-                final Button buttonHalfDollar  = (Button) coinView.findViewById(R.id.buttonHalfDollar);
-                final Button buttonDollar      = (Button) coinView.findViewById(R.id.buttonDollar);
+
+                final Button buttonPenny      = (Button) coinView.findViewById(R.id.buttonPenny);
+                final Button buttonNickel     = (Button) coinView.findViewById(R.id.buttonNickel);
+                final Button buttonDime       = (Button) coinView.findViewById(R.id.buttonDime);
+                final Button buttonQuarter    = (Button) coinView.findViewById(R.id.buttonQuarter);
+                final Button buttonRandom     = (Button) coinView.findViewById(R.id.buttonRandom);
+                final Button buttonHalfDollar = (Button) coinView.findViewById(R.id.buttonHalfDollar);
+                final Button buttonDollar     = (Button) coinView.findViewById(R.id.buttonDollar);
+
+                final Button buttonLock = coinSelectDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
                 //Coin Button onClickListeners
                 buttonPenny.setOnClickListener(new View.OnClickListener() {
@@ -215,16 +223,34 @@ public class ChangeHandler extends VendingMachine {
                         onCoinSelect(new Coin());
                     }
                 });
+                buttonLock.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CharSequence btnTxt = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText();
+
+                        btnTxt = btnTxt.equals(UNLOCK) ? LOCK : UNLOCK;
+
+                        coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setText(btnTxt);
+                    }
+                });
             }
 
             public void onCoinSelect(Coin coin){
+                float sum = getSumOfInsertedCoins();
                 onCoinInserted(coin);
-                displayHandler.updateDisplay(getSumOfInsertedCoins());
-                coinSelectDialog.dismiss();
+                displayHandler.updateDisplay(sum);
+
+                String lockStr = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText().toString();
+                if (lockStr.equals(LOCK)) {
+                    coinSelectDialog.dismiss();
+                }
             }
         });
 
         coinSelectDialog.show();
+
+        coinSelectDialog.getButton(coinSelectDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
 
     /***********************
@@ -260,7 +286,7 @@ public class ChangeHandler extends VendingMachine {
                 .setView(returnView)
                 .setTitle("Returned Coins")
                 .setPositiveButton("Remove Coins", null)
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNegativeButton("Close", null)
                 .setCancelable(true)
                 .create();
 
@@ -298,6 +324,9 @@ public class ChangeHandler extends VendingMachine {
         });
 
         returnSlotDialog.show();
+
+        returnSlotDialog.getButton(returnSlotDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        returnSlotDialog.getButton(returnSlotDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
 
     /**************************
