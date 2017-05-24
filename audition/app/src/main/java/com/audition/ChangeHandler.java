@@ -333,20 +333,16 @@ public class ChangeHandler extends VendingMachine {
      *   Change Calculation   *
      **************************/
     
-    // This required feature is rather vague. If I have a single nickel, I can make change if the
-    // buyer only over pays by a nickel (ie. $0.65 item, paid w/ quarter, quarter, dime, dime, is a
-    // nickel change), but not by anything else. I will make the assumption that if I have at least
-    // $1.00 in quarters, $1.00 in dimes, and $0.50 in nickels, I can make change for anything.
-    // Obviously if I have no coins, I can't make change either.
+    // The only possible change values are 5, 10, 15, & 20 cents. If the buyer overpays by more,
+    // change can be made with the extra coins. All 4 change configurations can be made with 3
+    // coins; 2 Nickels and 1 dime. This function checks that those minimum requirements are met.
     public boolean isChangeAvailableForNextPurchase(){
 
-        final int requiredNickelQty  = 10;
-        final int requiredDimeQty    = 10;
-        final int requiredQuarterQty = 4;
+        final int requiredNickelQty = 2;
+        final int requiredDimeQty   = 1;
 
         if(db.getQuantityOfCoin(nickel.getKey()) < requiredNickelQty ||
-                db.getQuantityOfCoin(dime.getKey()) < requiredDimeQty ||
-                db.getQuantityOfCoin(quarter.getKey()) < requiredQuarterQty) {
+                db.getQuantityOfCoin(dime.getKey()) < requiredDimeQty) {
             return false;
         }
 
