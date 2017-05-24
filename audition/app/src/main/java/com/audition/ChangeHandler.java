@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,6 +41,8 @@ public class ChangeHandler extends VendingMachine {
     Coin halfDollar = new Coin(11.034f, 30.61f, 2.15f, 0.5f);
     Coin dollar     = new Coin(8.1f, 26.49f, 2.0f, 1.0f);
 
+    Map<Integer, Coin> coinKeyMap;
+
     ChangeHandler(Activity activity, DatabaseHandler db){
         this.activity = activity;
         this.ic = (CallbackInterface) activity;
@@ -51,6 +54,11 @@ public class ChangeHandler extends VendingMachine {
     private void initialize(){
         listInsertedCoins = new ArrayList<>();
         listReturnedCoins = new ArrayList<>();
+
+        coinKeyMap = new HashMap<>();
+        coinKeyMap.put(nickle.getKey(), nickle);
+        coinKeyMap.put(dime.getKey(), dime);
+        coinKeyMap.put(quarter.getKey(), quarter);
     }
 
     /************************
@@ -287,15 +295,48 @@ public class ChangeHandler extends VendingMachine {
         returnSlotDialog.show();
     }
 
-    public boolean canChangeBeMade(float productPrice){
+    /**************************
+     *   Change Calculation   *
+     **************************/
 
-        float changeNeeded = Math.abs(getSumOfInsertedCoins() - productPrice);
+    public void makeChange(float productPrice, float currentTotal){
+        float changeNeeded = Math.abs(productPrice - currentTotal);
+        changeNeeded = round(changeNeeded, 2); //round up to 2 decimal places
 
-        //If change cannot be made, an empty Map will be returned
-        return !makeChange(changeNeeded, false).isEmpty();
+        //Get change map
+        Map<Integer, Integer> changeMap = calculateChange(changeNeeded);
+
+        //Iterate through map
+        for (Map.Entry<Integer, Integer> entry : changeMap.entrySet()) {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+
+            for(int i=0; i<value; i++){ //for number of given coin in change
+                db.decrementQuantityOfCoin(key); //remove from DB
+
+                sendCoinToReturnBay(new Coin(coinKeyMap.get(key))); //Send to return bay
+            }
+        }
     }
 
-    public Map<Integer, Integer> makeChange(float changeNeeded, boolean useInsertedCoins){
+    public boolean canChangeBeMade(float currentTotal, float productPrice){
+        float changeNeeded = Math.abs(currentTotal - productPrice);
+        changeNeeded = round(changeNeeded, 2); //round up to 2 decimal places
+
+        //If change cannot be made, an empty Map will be returned
+        return !calculateChange(changeNeeded).isEmpty();
+    }
+
+    /*
+    In researching the specific issue of change calculation, I found several solutions using
+    dynamic programming and Breadth-First Searching of trees. They all appeared rather slow
+    and didn't exactly fit this use case. My solution is simply to attempt to make change like a
+    cashier would. Collect quarters until any more would be too much change, repeat for dimes,
+    then nickles. Because we only have those 3 coins, and we know that all change requests will
+    be for multiples of 5, the solution was a lot simpler than first thought. At its worst case,
+    this method will run in O(n), where n is the number of coins in the vending machine.
+    */
+    public Map<Integer, Integer> calculateChange(float changeNeeded){
 
         //Get change from DB
         Map<Integer, Integer> totalCoins = new HashMap<>();
@@ -303,11 +344,9 @@ public class ChangeHandler extends VendingMachine {
         totalCoins.put(dime.getKey(), db.getQuantityOfCoin(dime.getKey()));
         totalCoins.put(quarter.getKey(), db.getQuantityOfCoin(quarter.getKey()));
 
-        if (useInsertedCoins) { //Use coins in coin slot if requested
-            //include change in coin slot
-            for(Coin coin: listInsertedCoins){
-                totalCoins.put(coin.getKey(), totalCoins.get(coin.getKey()) + 1);
-            }
+        //include change in coin slot
+        for(Coin coin: listInsertedCoins){
+            totalCoins.put(coin.getKey(), totalCoins.get(coin.getKey()) + 1);
         }
 
         //Initialize Map to hold change
@@ -323,15 +362,11 @@ public class ChangeHandler extends VendingMachine {
 
         //Verify change can be make
         if (changeNeeded >= 0.01f) {
-            //Change cannot be made
-            Log.e("CHANGE_TAG","exact change needed\nremaining change: " + changeNeeded + "\n");
-            changeMap.clear();
+            changeMap.clear(); //Change cannot be made, return empty map
         }
 
         return changeMap;
     }
-
-
 
     private float changeHelper(Map<Integer, Integer> totalCoins, Map<Integer, Integer> changeMap, float changeNeeded, Coin coin){
         int key = coin.getKey();
@@ -346,19 +381,10 @@ public class ChangeHandler extends VendingMachine {
         return changeNeeded;
     }
 
-    private void printMap(Map<Integer, Integer> changeMap){
-        String sb = "map:\n";
-        sb = sb + "nickle: " + changeMap.get(nickle.getKey());
-        sb = sb + "\ndime: " + changeMap.get(dime.getKey());
-        sb = sb + "\nquarter: " + changeMap.get(quarter.getKey());
-
-        Log.e("CHANGE_TAG", sb);
+    //http://docs.oracle.com/javase/6/docs/api/java/math/BigDecimal.html#ROUND_HALF_UP
+    private static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
-
-
-
-
-
-
-
 }

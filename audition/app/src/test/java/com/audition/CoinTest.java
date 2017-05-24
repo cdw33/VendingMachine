@@ -12,14 +12,21 @@ public class CoinTest {
     final float testWeight = 21.21f;
     final float testWidth = 1.95f;
     final float testValue = 0.05f;
+    final int testKey = 4;
 
     final float unknownValue = -1.0f;
 
+    Coin testCoinWithKey = new Coin(testKey, testDiameter, testWidth, testWeight, testValue);
     Coin testCoinWithValue = new Coin(testDiameter, testWidth, testWeight, testValue);
     Coin testCoinUnknownValue = new Coin(testDiameter, testWidth, testWeight);
     Coin testCoinRandom = new Coin();
 
     final double delta = 0;
+
+    @Test
+    public void getKey() throws Exception {
+        assertEquals(testKey, testCoinWithKey.getKey(), delta);
+    }
 
     @Test
     public void getDiameter() throws Exception {
@@ -52,6 +59,15 @@ public class CoinTest {
 
         assertEquals(testSetValue, testCoinWithValue.getValue(), delta);
         assertEquals(testSetValue, testCoinRandom.getValue(), delta);
+    }
+
+    @Test
+    public void setKey() throws Exception {
+        int testSetKey = 3;
+
+        testCoinWithKey.setKey(testSetKey);
+
+        assertEquals(testSetKey, testCoinWithKey.getKey(), delta);
     }
 
     @Test

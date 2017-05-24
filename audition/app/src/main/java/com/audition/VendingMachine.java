@@ -56,7 +56,7 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
         }
 
         //Check if exact change is required
-        if (!changeHandler.canChangeBeMade(productPrice)) { //If change cannot be made
+        if (!changeHandler.canChangeBeMade(currentTotal, productPrice)) { //If change cannot be made
             displayHandler.flashMessage(displayHandler.EXACT_CHANGE);
             return;
         }
@@ -67,7 +67,10 @@ public class VendingMachine extends AppCompatActivity implements CallbackInterfa
         //Dispense product
         productHandler.dispenseProduct(productID);
 
-        //TODO - Make change for customer
+        //Make change if necessary
+        if(currentTotal > productPrice){
+            changeHandler.makeChange(productPrice, currentTotal);
+        }
 
         //Update Display
         displayHandler.flashMessage(displayHandler.THANK_YOU);
