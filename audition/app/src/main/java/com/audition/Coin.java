@@ -21,9 +21,9 @@ public class Coin {
     Coin(){ //Generate random coin
         Random rand = new Random();
 
-        diameter = rand.nextFloat();
-        width = rand.nextFloat();
-        weight = rand.nextFloat();
+        diameter = rand.nextFloat() * 15;
+        width = rand.nextFloat() * 2;
+        weight = rand.nextFloat() * 10;
 
         value = UNKNOWN_VALUE; //unknown value
         key = 0;

@@ -164,7 +164,7 @@ public class ChangeHandler extends VendingMachine {
         final AlertDialog coinSelectDialog = new AlertDialog.Builder(activity)
                 .setView(coinView)
                 .setTitle("Coin Select")
-                .setPositiveButton("Lock", null)
+                .setPositiveButton(LOCK, null)
                 .setNegativeButton("Close", null)
                 .setCancelable(true)
                 .create();
@@ -229,15 +229,21 @@ public class ChangeHandler extends VendingMachine {
                 buttonLock.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CharSequence btnTxt = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText();
-
-                        btnTxt = btnTxt.equals(UNLOCK) ? LOCK : UNLOCK;
-
-                        coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setText(btnTxt);
+                        toggleLockButton();
 
                         updateDialogTitle();
                     }
                 });
+            }
+
+            //Toggles lock button
+            //When lock is activated, coins can continue to be selected without Dialog closing
+            public void toggleLockButton(){
+                CharSequence btnTxt = coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).getText();
+
+                btnTxt = btnTxt.equals(UNLOCK) ? LOCK : UNLOCK;
+
+                coinSelectDialog.getButton(coinSelectDialog.BUTTON_POSITIVE).setText(btnTxt);
             }
 
             public void onCoinSelect(Coin coin){
@@ -317,10 +323,10 @@ public class ChangeHandler extends VendingMachine {
                 //List and display returned coins
                 String returnedCoinSB = "";
                 for(Coin coin : listReturnedCoins){
-                    returnedCoinSB = returnedCoinSB + "Weight: " + String.format("%.4f", coin.getWeight()) + "g" +
-                            ", Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm,\n" +
-                            "Width: " + String.format("%.4f", coin.getWidth()) + "mm" +
-                            ", Value: " + (coin.getValue() == -1.0f ? "?" : "$" + String.format("%.2f", coin.getValue())) + "\n\n";
+                    returnedCoinSB = returnedCoinSB + "Weight: " + String.format("%.4f", coin.getWeight()) + "g, " +
+                            "Diameter: " + String.format("%.4f", coin.getDiameter()) + "mm,\n" +
+                            "Width: " + String.format("%.4f", coin.getWidth()) + "mm, " +
+                            "Value: " + (coin.getValue() == -1.0f ? "?" : "$" + String.format("%.2f", coin.getValue())) + "\n\n";
                 }
                 tvReturnedCoins.setText(returnedCoinSB);
 
