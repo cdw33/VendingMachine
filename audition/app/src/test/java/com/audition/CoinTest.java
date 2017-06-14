@@ -9,17 +9,17 @@ import static org.junit.Assert.*;
  */
 public class CoinTest {
     final float testDiameter = 5.0f;
-    final float testWeight = 21.21f;
-    final float testWidth = 1.95f;
-    final float testValue = 0.05f;
-    final int testKey = 4;
+    final float testWeight   = 21.21f;
+    final float testWidth    = 1.95f;
+    final float testValue    = 0.05f;
+    final int testKey        = 4;
 
     final float unknownValue = -1.0f;
 
-    Coin testCoinWithKey = new Coin(testKey, testDiameter, testWidth, testWeight, testValue);
-    Coin testCoinWithValue = new Coin(testDiameter, testWidth, testWeight, testValue);
-    Coin testCoinUnknownValue = new Coin(testDiameter, testWidth, testWeight);
-    Coin testCoinRandom = new Coin();
+    Coin testCoinWithKey      = new Coin(testKey, testWeight, testDiameter, testWidth, testValue);
+    Coin testCoinWithValue    = new Coin(testWeight, testDiameter, testWidth, testValue);
+    Coin testCoinUnknownValue = new Coin(testWeight, testDiameter, testWidth);
+    Coin testCoinRandom       = new Coin();
 
     final double delta = 0;
 
@@ -72,11 +72,11 @@ public class CoinTest {
 
     @Test
     public void isSame() throws Exception {
-        Coin idealCoin = new Coin(5.0f, 21.21f, 1.95f);
-        Coin exactSameCoin = new Coin(5.0f, 21.21f, 1.95f);
-        Coin inToleranceTestCoin = new Coin(4.76f, 21.15f, 1.86f);
+        Coin idealCoin              = new Coin(5.0f,  21.21f, 1.95f);
+        Coin exactSameCoin          = new Coin(5.0f,  21.21f, 1.95f);
+        Coin inToleranceTestCoin    = new Coin(4.76f, 21.15f, 1.86f);
         Coin outOfToleranceTestCoin = new Coin(4.75f, 21.15f, 1.86f);
-        Coin differentCoin = new Coin(3.2f, 18.34f, 1.65f);
+        Coin differentCoin          = new Coin(3.2f,  18.34f, 1.65f);
 
         assertTrue(idealCoin.isSame(exactSameCoin));
         assertTrue(idealCoin.isSame(inToleranceTestCoin));

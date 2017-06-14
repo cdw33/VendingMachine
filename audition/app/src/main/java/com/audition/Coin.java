@@ -22,43 +22,43 @@ public class Coin {
         Random rand = new Random();
 
         diameter = rand.nextFloat() * 15;
-        width = rand.nextFloat() * 2;
-        weight = rand.nextFloat() * 10;
+        width    = rand.nextFloat() * 2;
+        weight   = rand.nextFloat() * 10;
 
         value = UNKNOWN_VALUE; //unknown value
-        key = 0;
+        key   = 0;
     }
 
-    Coin(float we, float d, float wi){ //Create coin of unknown value
-        diameter = d;
-        width = wi;
-        weight = we;
+    Coin(float coinWeight, float coinDiameter, float coinWidth){ //Create coin of unknown value
+        weight   = coinWeight;
+        diameter = coinDiameter;
+        width    = coinWidth;
 
         value = UNKNOWN_VALUE; //unknown value
-        key = 0;
+        key   = 0;
     }
 
     //Create coin with known value
-    Coin(float we, float d, float wi, float v){
-        diameter = d;
-        width = wi;
-        weight = we;
-        value = v;
-        key = 0;
+    Coin(float coinWeight, float coinDiameter, float coinWidth, float coinValue){
+        weight   = coinWeight;
+        diameter = coinDiameter;
+        width    = coinWidth;
+        value    = coinValue;
+        key      = 0;
     }
 
-    Coin(int k, float we, float d, float wi, float v){
-        key = k;
-        diameter = d;
-        width = wi;
-        weight = we;
-        value = v;
+    Coin(int key, float coinWeight, float coinDiameter, float coinWidth, float coinValue){
+        this.key = key;
+        weight   = coinWeight;
+        diameter = coinDiameter;
+        width    = coinWidth;
+        value    = coinValue;
     }
 
     Coin(Coin copyCoin){
+        this.weight   = copyCoin.getWeight();
         this.diameter = copyCoin.getDiameter();
         this.width    = copyCoin.getWidth();
-        this.weight   = copyCoin.getWeight();
         this.value    = copyCoin.getValue();
         this.key      = copyCoin.getKey();
     }
@@ -97,7 +97,6 @@ public class Coin {
         if( isWithinTolerance(this.diameter, compareCoin.diameter) &&
                 isWithinTolerance(this.weight, compareCoin.weight) &&
                 isWithinTolerance(this.width, compareCoin.width) ){
-
             return true;
         }
 
